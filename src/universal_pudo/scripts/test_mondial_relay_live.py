@@ -1,5 +1,5 @@
 from pprint import pprint
-
+from pathlib import Path
 from universal_pudo.providers.mondial_relay.client import (
     MondialRelayClient,
 )
@@ -21,6 +21,21 @@ xml_response = client.search_pickup_points(
     city="ISSY LES MOULINEAUX",
 )
 
+Path(
+    "tests/data/mondial_relay/point_relais_recherche_response.xml"
+).write_text(
+    xml_response,
+    encoding="utf-8",
+)
+
+
+xml_response = client.search_pickup_points(
+    country_code="FR",
+    postal_code="92130",
+    city="ISSY LES MOULINEAUX",
+)
+
+
 pickup_points = (
     MondialRelayResponseParser.extract_pickup_points(
         xml_response
@@ -37,3 +52,5 @@ if pickup_points:
     )
 
     pprint(vars(pickup_point))
+    
+
