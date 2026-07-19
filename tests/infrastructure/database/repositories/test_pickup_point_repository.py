@@ -343,3 +343,51 @@ def test_delete_pickup_point(session: Session) -> None:
     result = repository.get_by_id("pickup-point-test-004")
 
     assert result is None
+    
+def test_search_pickup_points_by_filters(session: Session) -> None:
+    carrier = CarrierModel(
+        id="pickup-point-search-carrier-001",
+        code="pickup_point_search_carrier_001",
+        name="Pickup Point Search Carrier 001",
+        lifecycle="ACTIVE",
+        supported_countries=["FR"],
+        capabilities=["SEARCH_PICKUP_POINTS"],
+    )
+
+    session.add(carrier)
+    session.flush()
+
+    repository = PickupPointRepository(session)
+
+    pickup_point = PickupPointModel(
+        id="pickup-point-search-001",
+        carrier_id="pickup-point-search-carrier-001",
+        carrier_pickup_id="SEARCH-PUDO-001",
+        name="Search Pickup Point",
+        pickup_type="LOCKER",
+        street_line_1="50 Search Street",
+        street_line_2=None,
+        postal_code="75009",
+        city="Paris",
+        state_or_region="Ile-de-France",
+        country_code="FR",
+        latitude=48.8766,
+        longitude=2.3522,
+        opening_hours="24/7",
+        active=True,
+    )
+
+    repository.save(pickup_point)
+    session.flush()
+
+    results = repository.search(
+        carrier_id="pickup-point-search-carrier-001",
+        country_code="FR",
+        postal_code="75009",
+        city="Paris",
+        pickup_type="LOCKER",
+        active=True,
+    )
+
+    assert len(results) == 1
+    assert results[0].id == "pickup-point-search-001"
