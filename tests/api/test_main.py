@@ -26,12 +26,14 @@ def test_carriers_endpoint() -> None:
         list,
     )
 
-
 def test_pickup_points_endpoint() -> None:
-    response = client.get("/pickup-points/")
+    response = client.get(
+        "/pickup-points/carrier-colissimo"
+    )
 
     assert response.status_code == 200
 
-    assert response.json() == {
-        "message": "pickup points endpoint ready",
-    }
+    assert isinstance(
+        response.json(),
+        list,
+    )
