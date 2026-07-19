@@ -1,0 +1,102 @@
+[project]
+name = "universal-pudo-engine"
+version = "0.1.0"
+description = "Carrier-agnostic engine to search, normalize and resolve pickup points across multiple carrier networks."
+readme = "README.md"
+requires-python = ">=3.14"
+license = { text = "License not yet selected" }
+authors = [
+    { name = "Vincent Gueret" }
+]
+keywords = [
+    "pudo",
+    "pickup-points",
+    "parcel-lockers",
+    "carrier-integration",
+    "logistics",
+    "ecommerce",
+    "fastapi",
+    "postgresql"
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+    "Framework :: FastAPI",
+]
+
+dependencies = [
+    "fastapi>=0.116.0",
+    "uvicorn[standard]>=0.35.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.16.0",
+    "psycopg[binary]>=3.2.0",
+    "pydantic>=2.11.0",
+    "pydantic-settings>=2.10.0",
+    "httpx>=0.28.0",
+    "python-dotenv>=1.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.0",
+    "pytest-cov>=6.2.0",
+    "ruff>=0.12.0",
+]
+
+[project.urls]
+Repository = "TBD"
+Documentation = "TBD"
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP",
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+python_files = [
+    "test_*.py"
+]
+python_classes = [
+    "Test*"
+]
+python_functions = [
+    "test_*"
+]
+addopts = [
+    "--strict-markers",
+    "--strict-config"
+]
+
+[tool.coverage.run]
+source = [
+    "src"
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.setuptools.packages.find]
+where = [
+    "src"
+]

@@ -1,0 +1,102 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
+# Local configuration
+*.local
+local_settings.py
+
+# PostgreSQL / database local files
+*.db
+*.sqlite
+*.sqlite3
+pgdata/
+
+# Alembic generated artifacts
+# Keep migration scripts tracked.
+# Do not ignore migrations/versions/
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.cache/
+
+# Ruff
+.ruff_cache/
+
+# Mypy / type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyright
+.pyright/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Packaging lock files
+# Keep lock files tracked if the project later decides to use them.
+# uv.lock
+
+# Secrets and credentials
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+credentials.json
+secrets.json
+
+# API payload samples containing private data
+private_payloads/
+carrier_credentials/
+sandbox_credentials/
+
+# Generated files
+generated/
+exports/
+
+# Local Docker overrides
+docker-compose.override.yml
