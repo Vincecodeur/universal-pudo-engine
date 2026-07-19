@@ -1,0 +1,298 @@
+# Architecture Diagrams
+
+## High Level Architecture
+
+```mermaid
+flowchart TD
+
+    Client[Client]
+
+    API[FastAPI API Layer]
+
+    UC[Application Use Cases]
+
+    Provider[PickupProvider Interface]
+
+    Mock[MockPickupProvider]
+
+    MR[MondialRelayLiveProvider]
+
+    Colissimo[ColissimoLiveProvider]
+
+    MRC[MondialRelayClient]
+
+    MRP[MondialRelayResponseParser]
+
+    MRM[MondialRelayMapper]
+
+    CC[ColissimoClient]
+
+    CM[ColissimoMapper]
+
+    DB[(PostgreSQL)]
+
+    Client --> API
+
+    API --> UC
+
+    UC --> Provider
+
+    Provider --> Mock
+
+    Provider --> MR
+
+    Provider --> Colissimo
+
+    MR --> MRC
+    MRC --> MRP
+    MRP --> MRM
+
+    Colissimo --> CC
+    CC --> CM
+
+    UC --> DB
+```
+
+---
+
+# Layered Architecture
+
+```mermaid
+flowchart TB
+
+    subgraph API
+        A1[FastAPI Routers]
+        A2[Schemas]
+    end
+
+    subgraph Application
+        B1[Use Cases]
+    end
+
+    subgraph Domain
+        C1[Carrier]
+        C2[PickupPoint]
+        C3[Value Objects]
+    end
+
+    subgraph Providers
+        D1[PickupProvider]
+        D2[MockPickupProvider]
+        D3[MondialRelayLiveProvider]
+        D4[ColissimoLiveProvider]
+    end
+
+    subgraph Infrastructure
+        E1[Clients]
+        E2[Mappers]
+        E3[Parsers]
+        E4[Repositories]
+        E5[SQLAlchemy]
+    end
+
+    A1 --> B1
+    B1 --> C1
+    B1 --> C2
+
+    B1 --> D1
+
+    D1 --> D2
+    D1 --> D3
+    D1 --> D4
+
+    D3 --> E1
+    D4 --> E1
+
+    E1 --> E2
+    E1 --> E3
+
+    E4 --> E5
+```
+
+---
+
+# Mondial Relay Integration Flow
+
+```mermaid
+flowchart LR
+
+    User[Search Request]
+
+    Provider[MondialRelayLiveProvider]
+
+    Client[MondialRelayClient]
+
+    SOAP[SOAP Request]
+
+    XML[XML Response]
+
+    Parser[MondialRelayResponseParser]
+
+    Mapper[MondialRelayMapper]
+
+    Model[PickupPointModel]
+
+    User --> Provider
+
+    Provider --> Client
+
+    Client --> SOAP
+
+    SOAP --> XML
+
+    XML --> Parser
+
+    Parser --> Mapper
+
+    Mapper --> Model
+```
+
+---
+
+# Colissimo Integration Flow
+
+```mermaid
+flowchart LR
+
+    User[Search Request]
+
+    Provider[ColissimoLiveProvider]
+
+    Client[ColissimoClient]
+
+    REST[REST Request]
+
+    JSON[JSON Response]
+
+    Mapper[ColissimoMapper]
+
+    Model[PickupPointModel]
+
+    User --> Provider
+
+    Provider --> Client
+
+    Client --> REST
+
+    REST --> JSON
+
+    JSON --> Mapper
+
+    Mapper --> Model
+```
+
+---
+
+# Canonical Model Flow
+
+```mermaid
+flowchart TD
+
+    MR[Mondial Relay XML]
+
+    C[Colissimo JSON]
+
+    MRM[MondialRelayMapper]
+
+    CM[ColissimoMapper]
+
+    P[PickupPointModel]
+
+    MR --> MRM
+    MRM --> P
+
+    C --> CM
+    CM --> P
+```
+
+---
+
+# Planned Phase 6 Architecture
+
+```mermaid
+flowchart TD
+
+    UC[Use Case]
+
+    Factory[ProviderFactory]
+
+    Registry[Provider Registry]
+
+    MR[MondialRelayLiveProvider]
+
+    Colissimo[ColissimoLiveProvider]
+
+    Mock[MockPickupProvider]
+
+    UC --> Factory
+
+    Factory --> Registry
+
+    Registry --> MR
+    Registry --> Colissimo
+    Registry --> Mock
+```
+
+---
+
+# Repository Structure
+
+```mermaid
+mindmap
+  root((Universal PUDO Engine))
+
+    src
+      api
+      application
+      domain
+      infrastructure
+
+      providers
+        base
+        mock
+        mondial_relay
+        colissimo
+
+    tests
+      api
+      application
+      domain
+      infrastructure
+
+      providers
+        mock
+        mondial_relay
+        colissimo
+
+    docs
+
+    diagrams
+```
+
+---
+
+# Current Project Status
+
+```mermaid
+flowchart LR
+
+    P1[Phase 1<br/>Foundations]
+    P2[Phase 2<br/>Provider Architecture]
+    P3[Phase 3<br/>Carrier Validation]
+    P4[Phase 4<br/>Live Integrations]
+    P5[Phase 5<br/>Live Providers]
+    P6[Phase 6<br/>Provider Factory]
+
+    P1 --> P2
+    P2 --> P3
+    P3 --> P4
+    P4 --> P5
+    P5 --> P6
+
+    style P1 fill:#90EE90
+    style P2 fill:#90EE90
+    style P3 fill:#90EE90
+    style P4 fill:#90EE90
+    style P5 fill:#90EE90
+    style P6 fill:#FFD580
+```

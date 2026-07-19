@@ -498,3 +498,24 @@ Commit milestone
 ↓
 Start production-ready live provider phase
 ```
+
+## Current Status
+
+✅ Mock Provider
+✅ Mondial Relay Live Provider
+✅ Colissimo Live Provider
+
+Supported integrations:
+
+| Carrier       | API Type  | Status  |
+| ------------- | --------- | ------- |
+| Mondial Relay | SOAP/XML  | ✅ Live |
+| Colissimo     | REST/JSON | ✅ Live |
+
+Project status:
+
+✅ Carrier abstraction layer
+✅ Canonical PickupPoint model
+✅ Live carrier integrations
+✅ Offline fixture testing
+✅ Provider pattern implementation

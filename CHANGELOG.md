@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- ColissimoClient
+- ColissimoLiveProvider
+- MondialRelayLiveProvider
+- Real Colissimo JSON fixture
+- Live provider tests
+- Provider package initialization
+
+### Testing
+
+- 117 automated tests passing
+- Mondial Relay live validation
+- Colissimo live validation
+
 ## [0.6.0-dev] - 2026-07-19
 
 ### Added
