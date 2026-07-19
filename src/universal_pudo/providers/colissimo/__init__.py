@@ -1,0 +1,3 @@
+"""
+Colissimo provider package.
+"""
