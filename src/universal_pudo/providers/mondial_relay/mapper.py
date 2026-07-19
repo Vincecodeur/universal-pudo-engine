@@ -25,12 +25,14 @@ class MondialRelayMapper:
             city=payload["Ville"],
             state_or_region=None,
             country_code=payload["Pays"],
+
             latitude=float(
-                payload["Latitude"]
+                payload["Latitude"].replace(",", ".")
             ),
             longitude=float(
-                payload["Longitude"]
+                payload["Longitude"].replace(",", ".")
             ),
+
             opening_hours=str(
                 payload.get(
                     "Horaire_Lundi",

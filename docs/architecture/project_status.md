@@ -11,11 +11,12 @@ Current Status:
 PHASE 1 ✅ COMPLETED
 PHASE 2 ✅ COMPLETED
 PHASE 3 ✅ COMPLETED
-PHASE 4 ⏳ NOT STARTED
+PHASE 4 ✅ LIVE POC VALIDATED
+PHASE 5 ⏳ NOT STARTED
 
 Current Test Count:
 
-97 / 97 PASSING
+104 / 104 PASSING
 
 ---
 
@@ -70,9 +71,17 @@ Validated Providers:
 
 ✅ Mock Provider
 
-✅ Colissimo - Mapper - Provider - Tests
+✅ Colissimo
 
-✅ Mondial Relay - Mapper - Provider - Tests
+- Mapper
+- Provider
+- Tests
+
+✅ Mondial Relay
+
+- Mapper
+- Provider
+- Tests
 
 Result:
 
@@ -87,6 +96,51 @@ without requiring changes to:
 
 ---
 
+## PHASE 4 - FIRST LIVE CARRIER INTEGRATION
+
+Status: VALIDATED
+
+Carrier:
+
+✅ Mondial Relay
+
+Completed:
+
+✅ SECURITY Hash Generator
+✅ SOAP Envelope Builder
+✅ SOAP Client Foundation
+✅ SOAP Response Parser
+✅ Live Integration Script
+✅ Real Payload Mapping
+✅ Real PickupPointModel Creation
+
+Validated Flow:
+
+Mondial Relay SOAP
+↓
+HTTP
+↓
+XML Response
+↓
+ResponseParser
+↓
+dict
+↓
+MondialRelayMapper
+↓
+PickupPointModel
+
+Live Validation Result:
+
+✅ Endpoint Reachable
+✅ Credentials Accepted
+✅ SECURITY Validated
+✅ XML Response Received
+✅ 10 Pickup Points Returned
+✅ PickupPointModel Successfully Created
+
+---
+
 ## TEST STATUS
 
 Domain Tests ✅
@@ -96,15 +150,20 @@ Use Case Tests ✅
 API Tests ✅
 
 Mock Provider Tests ✅
+
 Colissimo Mapper Tests ✅
 Colissimo Provider Tests ✅
 
-Mondial Relay Mapper Tests ✅
-Mondial Relay Provider Tests ✅
+Mondial Relay Security ✅
+Mondial Relay Client ✅
+Mondial Relay Parser ✅
+Mondial Relay Mapper ✅
+Mondial Relay Provider ✅
+Mondial Relay Live Payload ✅
 
 Total:
 
-97 PASSING TESTS
+104 PASSING TESTS
 
 ---
 
@@ -126,7 +185,7 @@ Provider Layer:
 
 Validated ✅
 
-Multi-Carrier Support:
+Live Carrier Connectivity:
 
 Validated ✅
 
@@ -134,40 +193,34 @@ Validated ✅
 
 ## KNOWN LIMITATIONS
 
-Current providers are mock/static.
+Current live integration remains isolated.
 
-Not implemented:
+Not yet implemented:
 
-❌ Real HTTP calls
-❌ SOAP integration
-❌ Authentication
-❌ Credential management
-❌ Retry strategies
-❌ Live carrier connections
+❌ Live Provider injected into Use Cases
+❌ Live Provider exposed through FastAPI
+❌ XML fixture storage
+❌ Retry strategy
+❌ Advanced timeout strategy
+❌ Opening hours normalization
+❌ Pickup type normalization
+❌ Environment-based credentials
 
 ---
 
-## NEXT PHASE
+## PHASE 5 - PRODUCTION READY LIVE PROVIDER
 
-PHASE 4
+Status: NOT STARTED
 
-First Live Provider Integration
+Objectives:
 
-Candidates:
-
-1. Mondial Relay
-2. Colissimo
-
-Goal:
-
-Real Carrier Payload
-↓
-Mapper
-↓
-PickupPointModel
-
-without changing the existing
-architecture.
+- Environment Variables
+- XML Fixtures
+- Retry Strategy
+- Error Mapping
+- Opening Hours Mapping
+- Live Provider Integration
+- FastAPI Exposure
 
 ---
 
@@ -177,170 +230,20 @@ Architecture Maturity: HIGH
 
 Provider Layer: VALIDATED
 
+Live SOAP Connectivity: VALIDATED
+
 Technical Debt: LOW
 
 Test Status: HEALTHY
 
 Project Ready For:
 
-✅ First Live Carrier Integration
-✅ Additional Carrier Experiments
-✅ Architecture Demonstrations
-✅ Portfolio Presentation
+✅ Productionization Of Mondial Relay Live Provider
+✅ XML Fixture Creation
+✅ Provider Pattern Reuse
+✅ Colissimo Live Integration
+✅ Portfolio Demonstration
 
-# Live Provider Strategy
+Latest Milestone:
 
-Status: Draft
-
----
-
-## OBJECTIVE
-
-Replace static provider data with real carrier data.
-
-Current:
-
-Static Data
-↓
-Mapper
-↓
-PickupPointModel
-
-Target:
-
-Carrier API
-↓
-Provider Client
-↓
-Mapper
-↓
-PickupPointModel
-
----
-
-## PROVIDER CANDIDATES
-
-1. Mondial Relay
-2. Colissimo
-
-Current Recommendation:
-
-Mondial Relay
-
-Reason:
-
-- Documentation available
-- Credentials available
-- Point Relais API documented
-- Good candidate for first live provider
-
----
-
-## ARCHITECTURAL PRINCIPLES
-
-Provider implementations must not expose:
-
-- SOAP payloads
-- HTTP responses
-- Carrier-specific DTOs
-
-Only:
-
-PickupPointModel
-
-may leave the provider layer.
-
----
-
-## NEW COMPONENTS
-
-Phase 4 introduces:
-
-providers/
-└── mondial_relay/
-├── mapper.py
-├── mondial_relay_pickup_provider.py
-├── security.py
-├── client.py
-└── payloads.py
-
----
-
-## IMPLEMENTATION ORDER
-
-Step 1
-
-SECURITY generation
-
-Input:
-
-- Enseigne
-- Private Key
-
-Output:
-
-- SECURITY hash
-
-Step 2
-
-SOAP Client
-
-Goal:
-
-- Execute Point Relais request
-
-Step 3
-
-Response Parsing
-
-Goal:
-
-- Extract payload
-
-Step 4
-
-Mapper Integration
-
-Goal:
-Payload
-↓
-PickupPointModel
-
-Step 5
-
-Provider Integration
-
-Goal:
-Live Provider
-↓
-Use Cases
-
----
-
-## SUCCESS CRITERIA
-
-A real Mondial Relay Point Relais request returns:
-
-PickupPointModel
-
-without changing:
-
-- Domain Layer
-- Repository Layer
-- API Layer
-
----
-
-## NON GOALS
-
-Not included:
-
-- DPD
-- GLS
-- UPS
-- Plugin architecture
-- Registry
-- Factory
-
-These topics are postponed until the first live provider
-is successfully integrated.
+✅ First Live Carrier Connection Successfully Validated

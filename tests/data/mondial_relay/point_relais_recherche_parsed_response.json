@@ -1,0 +1,18 @@
+{
+  "pickup_points": [
+    {
+      "Num": "020243",
+      "LgAdr1": "LOCKER CARREFOUR CITY ISSY LES",
+      "LgAdr2": "",
+      "LgAdr3": "14 BOULEVARD VOLTAIRE",
+      "LgAdr4": "",
+      "CP": "92130",
+      "Ville": "ISSY LES MOULINEAUX",
+      "Pays": "FR",
+      "Latitude": "48,82619",
+      "Longitude": "2,27988",
+      "TypeActivite": "",
+      "Distance": "0"
+    }
+  ]
+}

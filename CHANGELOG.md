@@ -1,157 +1,201 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-The format is inspired by Keep a Changelog.
-
----
-
-## [0.5.0] - 2026-07-19
+## [0.6.0-dev] - 2026-07-19
 
 ### Added
 
-#### Mondial Relay
+#### Mondial Relay Live Proof of Concept
 
-- Added MondialRelayMapper
-- Added MondialRelayPickupProvider
-- Added Mondial Relay test fixtures
+- Added Mondial Relay SOAP client foundation
+- Added Mondial Relay SECURITY hash generation
+- Added SOAP envelope generation for WSI4_PointRelais_Recherche
+- Added Mondial Relay SOAP response parser
+- Added live test script for Mondial Relay Point Relais search
+- Added real parsed Mondial Relay fixture in JSON format
+- Added live payload mapping test from parsed Mondial Relay data to PickupPointModel
 
 #### Provider Layer
 
-- Validated multi-carrier mapping strategy
-- Validated PickupPointModel with multiple carriers
-- Confirmed carrier-agnostic architecture
-
-#### Documentation
-
-- Added ADR-0001 Provider Mapping Strategy
-- Added provider_mapping_strategy.md
+- Added MondialRelayClient
+- Added MondialRelayResponseParser
+- Added MondialRelaySecurity
+- Added Mondial Relay live payload mapping validation
 
 #### Tests
 
-Added:
+- Added test_client.py
+- Added test_response_parser.py
+- Added test_live_payload_mapping.py
+- Added official Mondial Relay SECURITY validation test
 
-- test_mondial_relay_mapper.py
-- test_mondial_relay_provider.py
+#### Dependencies
 
-Test suite:
+- Added requests dependency for SOAP HTTP calls
 
-88 → 97 passing tests
+### Changed
 
-### Architecture Validation
+#### Mondial Relay Mapper
+
+- Updated latitude parsing to support decimal values returned with comma separators
+- Updated longitude parsing to support decimal values returned with comma separators
+
+Example:
+
+Before:
+
+48,82619
+2,27988
+
+After Mapping:
+
+48.82619
+2.27988
+
+#### Provider Test Structure
+
+Provider tests reorganized by carrier:
+
+tests/providers/
+
+- mock/
+- colissimo/
+- mondial_relay/
+
+### Validated
+
+#### Live Mondial Relay SOAP Integration
+
+Validated flow:
+
+Mondial Relay SOAP
+↓
+HTTP
+↓
+XML Response
+↓
+ResponseParser
+↓
+dict
+↓
+MondialRelayMapper
+↓
+PickupPointModel
+
+#### Live Carrier Request
+
+Successfully executed:
+
+WSI4_PointRelais_Recherche
 
 Validated:
 
-Colissimo Payload
+- Endpoint connectivity
+- SOAP envelope generation
+- SECURITY hash generation
+- HTTP communication
+- XML parsing
+- Payload mapping
+
+#### Real Data Validation
+
+Validated real pickup point:
+
+Carrier:
+
+mondial-relay
+
+Carrier Pickup ID:
+
+020243
+
+Location:
+
+ISSY LES MOULINEAUX
+
+Postal Code:
+
+92130
+
+Coordinates:
+
+48.82619
+2.27988
+
+Pickup Point Name:
+
+LOCKER CARREFOUR CITY ISSY LES
+
+Address:
+
+14 BOULEVARD VOLTAIRE
+
+#### Automated Tests
+
+Current verified result:
+
+104 passed
+1 warning
+
+### Architecture Validation
+
+Validated architecture:
+
+Carrier Payload
+↓
+Provider Client
+↓
+ResponseParser
+↓
+dict
+↓
+Provider Mapper
 ↓
 PickupPointModel
-
-Mondial Relay Payload
 ↓
-PickupPointModel
+Use Cases
+↓
+API
 
-without modifications to:
+Result:
+
+The architecture successfully supports a live carrier integration without modifications to:
 
 - Domain Layer
 - Repository Layer
-- API Layer
 - Database Layer
+- API Layer
 
-## [Unreleased]
+### Known Limitations
 
-### Added
+The live integration is currently validated through a dedicated test script.
 
-#### Project Foundations
+Not yet implemented:
 
-- Product vision document
-- Architecture document
-- Roadmap document
-- Domain model document
-- PostgreSQL database design document
-- Coding standards document
-- Development guide document
-- Initial README
+- Live provider integration inside application use cases
+- FastAPI live endpoint integration
+- XML fixture storage for offline regression testing
+- SOAP retry strategy
+- SOAP timeout strategy beyond basic requests timeout
+- Full Mondial Relay error code mapping
+- Opening hours normalization
+- LOCKER / RELAY type normalization
+- Environment variable based credential management
 
-#### Product Vision
+### Milestone Achieved
 
-- Definition of Universal PUDO Engine vision
-- Scope definition
-- Out-of-scope definition
-- Long-term product objectives
+First Live Carrier Integration Proof of Concept
 
-#### Architecture
+Status:
 
-- Domain First architecture
-- Provider architecture
-- Carrier lifecycle strategy
-- Internationalization strategy
+COMPLETED
 
-#### Domain Model
+Validated carrier:
 
-- PickupPoint entity
-- Carrier entity
-- CarrierAccount entity
-- Address value object
-- GeoLocation value object
+Mondial Relay
 
-#### Database Design
+Project maturity:
 
-- PostgreSQL-first strategy
-- Carrier schema
-- Carrier account schema
-- Pickup point schema
-- Index strategy
+Architecture Proven
 
-#### Governance
-
-- Coding standards
-- Development workflow
-- Documentation workflow
-- Release workflow
-
----
-
-## [Planned]
-
-### V1 Foundation
-
-- Python project bootstrap
-- pyproject.toml
-- PostgreSQL integration
-- SQLAlchemy models
-- Alembic migrations
-- Provider framework
-- Colissimo provider
-- Mondial Relay provider
-- Chronopost provider
-- SDK
-- REST API
-
-### V2 Resolution Engine
-
-- Pickup point resolution
-- Confidence scoring
-
-### V3 Intelligence Layer
-
-- Recommendation engine
-- Alternative pickup suggestions
-
-### V4 Universal PUDO Portal
-
-- Web interface
-- Manual resolution tools
-
-### V5 Commerce Workflows
-
-- Home delivery conversion
-- OMS/WMS workflows
-
-### V6 Ecosystem Integrations
-
-- WooCommerce
-- Shopify
-- Prestashop
-- Magento
-- Shopware
-- Wix
+- Real Carrier Connectivity Proven
+- Real Payload Mapping Proven
