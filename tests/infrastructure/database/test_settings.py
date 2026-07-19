@@ -3,7 +3,9 @@ from universal_pudo.infrastructure.database.settings import (
 )
 
 
-def test_settings_can_be_created_without_env():
+def test_settings_can_be_loaded() -> None:
     settings = DatabaseSettings()
 
-    assert settings.database_url == ""
+    assert settings.database_url.startswith(
+        "postgresql+psycopg://"
+    )
