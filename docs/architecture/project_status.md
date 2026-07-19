@@ -4,376 +4,186 @@ Last Updated: 2026-07-19
 
 ---
 
-## PROJECT VISION
+## PROJECT STATUS
 
-Universal Pickup Point Engine
+Current Status:
 
-Objectif :
+PHASE 1 ✅ COMPLETED
+PHASE 2 ✅ COMPLETED
+PHASE 3 ✅ COMPLETED
+PHASE 4 ⏳ NOT STARTED
 
-Créer un moteur unifié capable de rechercher,
-récupérer et gérer des points relais provenant
-de plusieurs transporteurs à travers une
-abstraction commune.
+Current Test Count:
 
-Transporteurs cibles futurs :
-
-- Colissimo
-- Mondial Relay
-- InPost
-- DPD
-- DHL
-- Transporteurs custom
+97 / 97 PASSING
 
 ---
 
-## CURRENT STATE
+## PHASE 1 - FOUNDATIONS
 
-Project Status:
+Status: COMPLETE
 
-[MVP TECHNIQUE V1 COMPLETED]
+Completed:
 
-Tests:
-
-78 passed
-0 failed
-1 warning
-
-Swagger:
-
-Validated
-
-Git:
-
-Repository synchronized
+✅ Domain Layer
+✅ SQLAlchemy Models
+✅ Repository Layer
+✅ PostgreSQL Support
+✅ Alembic Migrations
+✅ FastAPI API
+✅ Swagger / OpenAPI
+✅ Carrier Endpoints
+✅ Pickup Point Endpoints
 
 ---
 
-## ARCHITECTURE
+## PHASE 2 - PROVIDER ARCHITECTURE
 
-Layers implemented:
+Status: COMPLETE
 
-[Domain]
-[Application]
-[API]
-[Infrastructure]
-[Providers]
+Completed:
 
-Pattern used:
+✅ PickupProvider Contract
+✅ Provider Mapping Strategy
+✅ Provider Layer Structure
+✅ ADR-0001 Provider Mapping Strategy
 
-API
+Architecture:
+
+Carrier Payload
+↓
+Provider Mapper
+↓
+PickupPointModel
 ↓
 Use Cases
 ↓
-Repositories
-↓
-PostgreSQL
+API
+
+---
+
+## PHASE 3 - MULTI-CARRIER VALIDATION
+
+Status: COMPLETE
+
+Validated Providers:
+
+✅ Mock Provider
+
+✅ Colissimo - Mapper - Provider - Tests
+
+✅ Mondial Relay - Mapper - Provider - Tests
+
+Result:
+
+PickupPointModel successfully supports
+multiple carrier payload structures
+without requiring changes to:
+
+✅ Domain Layer
+✅ Repository Layer
+✅ Database Layer
+✅ API Layer
+
+---
+
+## TEST STATUS
+
+Domain Tests ✅
+Model Tests ✅
+Repository Tests ✅
+Use Case Tests ✅
+API Tests ✅
+
+Mock Provider Tests ✅
+Colissimo Mapper Tests ✅
+Colissimo Provider Tests ✅
+
+Mondial Relay Mapper Tests ✅
+Mondial Relay Provider Tests ✅
+
+Total:
+
+97 PASSING TESTS
+
+---
+
+## ARCHITECTURE STATUS
+
+Domain Layer:
+
+Stable ✅
+
+Database Layer:
+
+Stable ✅
+
+API Layer:
+
+Stable ✅
 
 Provider Layer:
 
-PickupProvider
-↓
-MockPickupProvider
-↓
-PickupPointRepository
-↓
-PostgreSQL
+Validated ✅
+
+Multi-Carrier Support:
+
+Validated ✅
 
 ---
 
-## DOMAIN LAYER
+## KNOWN LIMITATIONS
 
-Status: COMPLETE (v1)
+Current providers are mock/static.
 
-Models:
+Not implemented:
 
-- Carrier
-- CarrierAccount
-- PickupPoint
-
-Value Objects:
-
-- Address
-- Geolocation
-
-Enums:
-
-- CarrierLifecycle
-- CarrierCapability
-- PickupType
+❌ Real HTTP calls
+❌ SOAP integration
+❌ Authentication
+❌ Credential management
+❌ Retry strategies
+❌ Live carrier connections
 
 ---
 
-## INFRASTRUCTURE LAYER
+## NEXT PHASE
 
-Status: COMPLETE (v1)
+PHASE 4
 
-Database:
+First Live Provider Integration
 
-- PostgreSQL
-- SQLAlchemy
+Candidates:
 
-Repositories:
-
-- CarrierRepository
-- CarrierAccountRepository
-- PickupPointRepository
-
-Features:
-
-- CRUD carriers
-- CRUD carrier accounts
-- CRUD pickup points
-
----
-
-## APPLICATION LAYER
-
-Status: COMPLETE (v1)
-
-Use Cases:
-
-- GetCarrier
-- ListCarriers
-- GetPickupPoint
-- ListPickupPoints
-- SearchPickupPoints
-- SearchPickupPointsByRadius
-
----
-
-## API LAYER
-
-Status: COMPLETE (v1)
-
-Validated Endpoints:
-
-GET /carriers
-
-GET /carriers/{carrier_id}
-
-GET /pickup-points/{carrier_id}
-
-GET /pickup-points/details/{pickup_point_id}
-
-GET /pickup-points/search
-
-GET /pickup-points/search-radius
-
-Swagger Status:
-
-Validated manually
-
----
-
-## SEARCH ENGINE
-
-Status: COMPLETE (v1)
-
-Supported Filters:
-
-- carrier_id
-- country_code
-- postal_code
-- city
-- pickup_type
-- active
-
----
-
-## GEOGRAPHIC SEARCH
-
-Status: COMPLETE (v1)
-
-Features:
-
-- Radius search
-- Haversine distance calculation
-
-Validated through:
-
-- Pytest
-- Swagger UI
-
----
-
-## PROVIDER LAYER
-
-Status: COMPLETE (v1)
-
-Implemented:
-
-Interface:
-
-- PickupProvider
-
-Providers:
-
-- MockPickupProvider
-
-Tests:
-
-- test_mock_pickup_provider.py
+1. Mondial Relay
+2. Colissimo
 
 Goal:
 
-Allow future carrier integrations
-without changing business logic.
+Real Carrier Payload
+↓
+Mapper
+↓
+PickupPointModel
+
+without changing the existing
+architecture.
 
 ---
 
-## TESTING
+## OVERALL ASSESSMENT
 
-Status: STABLE
+Architecture Maturity: HIGH
 
-Current Result:
+Provider Layer: VALIDATED
 
-78 passed
-0 failed
+Technical Debt: LOW
 
-Coverage Areas:
+Test Status: HEALTHY
 
-- Domain
-- Repositories
-- Use Cases
-- API
-- Providers
+Project Ready For:
 
-Known Warning:
-
-StarletteDeprecationWarning
-(httpx / testclient)
-
-Decision:
-
-Accepted for now
-
----
-
-## ARCHITECTURAL DECISIONS
-
-ADR-001
-
-Provider abstraction introduced
-before real carrier integrations.
-
-Reason:
-
-Prepare for future carrier providers.
-
-Status:
-
-Implemented
-
----
-
-ADR-002
-
-One-file-at-a-time workflow.
-
-Process:
-
-1. Modify file
-2. py_compile
-3. Targeted pytest
-4. Global pytest
-5. Commit
-6. Push
-
-Status:
-
-Active
-
----
-
-ADR-003
-
-Three-error safeguard.
-
-Rule:
-
-After three Copilot errors on the
-same subject or file:
-
-STOP
-
-Actions:
-
-1. Root cause analysis
-2. Inspect real project files
-3. Return to last stable version
-4. Apply minimal verified fix
-
-Status:
-
-Active
-
----
-
-## KNOWN PROJECT DATA
-
-Demo Carriers:
-
-- carrier-colissimo
-- carrier-mondial-relay
-- carrier-inpost
-
-Demo Pickup Points:
-
-- pickup-colissimo-paris-rivoli
-- pickup-mondial-relay-lyon
-- pickup-inpost-defense-locker
-
----
-
-## BACKLOG
-
-Provider Layer v2
-
-- Provider Registry
-- Provider Factory
-- Provider Selection
-
----
-
-Search Engine v2
-
-- distance_km in API response
-- sort by distance
-- pagination
-
----
-
-Carrier Integrations
-
-- Colissimo Provider
-- Mondial Relay Provider
-- InPost Provider
-
----
-
-Documentation
-
-- Architecture Decision Records (ADR)
-- Integration examples
-- Provider development guide
-
----
-
-## NEXT RECOMMENDED STEP
-
-Prepare first real carrier provider design.
-
-Recommended target:
-
-Colissimo Provider
-
-Before implementation:
-
-- identify provider contract
-- identify authentication model
-- identify search capabilities
-- identify pickup point retrieval flow
-
-Current project status:
-
-READY FOR PROVIDER V2 DESIGN
+✅ First Live Carrier Integration
+✅ Additional Carrier Experiments
+✅ Architecture Demonstrations
+✅ Portfolio Presentation

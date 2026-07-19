@@ -1,197 +1,365 @@
 # Universal PUDO Engine
 
-Universal PUDO Engine is a carrier-agnostic engine designed to search, normalize, resolve and later recommend pickup points (PUDO) across multiple carrier networks through a unified interface.
+Universal PUDO Engine is a carrier-agnostic pickup point abstraction platform.
 
-The project focuses on interoperability, extensibility and integration simplicity.
+The project provides a normalized model for PUDO (Pick-Up Drop-Off) locations across multiple logistics carriers and exposes a unified API regardless of carrier-specific payload structures.
 
----
-
-# Vision
-
-Most carrier networks expose their own APIs, authentication models, data structures and pickup point identifiers.
-
-Universal PUDO Engine provides a common abstraction layer that allows consuming systems to interact with pickup points through a unified model instead of carrier-specific implementations.
-
-The engine is designed to become a reusable foundation for:
-
-- OMS
-- WMS
-- TMS
-- E-commerce platforms
-- Marketplaces
-- Custom applications
+The primary objective is to validate a scalable provider architecture capable of integrating multiple carriers while maintaining a stable domain model and API surface.
 
 ---
 
-# Main Goals
+# Objectives
 
+The project aims to:
+
+- Normalize carrier-specific pickup point payloads.
+- Expose a unified pickup point API.
+- Separate business logic from carrier implementations.
+- Validate a multi-carrier provider architecture.
+- Create a maintainable foundation for future carrier integrations.
+
+---
+
+# Current Status
+
+## Completed
+
+### Domain Layer
+
+- Address
+- Geolocation
+- PickupPoint
+- PickupType
+- Carrier
+- CarrierAccount
+- CarrierCapability
+- CarrierLifecycle
+
+### Persistence Layer
+
+- SQLAlchemy models
+- Repository pattern
+- Alembic migrations
+- PostgreSQL support
+
+### Application Layer
+
+- List carriers
+- Get carrier details
 - Search pickup points
-- Normalize carrier data
-- Abstract carrier APIs
-- Resolve pickup point identities
-- Provide a reusable SDK
-- Provide a reusable REST API
+- Get pickup point details
 
-Future versions will introduce:
+### API Layer
 
-- Recommendation Engine
-- Operational Intelligence
-- Business Portal
-- CMS Integrations
+- FastAPI
+- OpenAPI / Swagger
+- Carrier endpoints
+- Pickup point endpoints
+
+### Provider Layer
+
+Validated providers:
+
+- Mock Provider
+- Colissimo Provider
+- Mondial Relay Provider
+
+Validated mappers:
+
+- Colissimo Mapper
+- Mondial Relay Mapper
+
+### Architecture Validation
+
+Validated architecture:
+
+Carrier Payload
+↓
+Provider Mapper
+↓
+PickupPointModel
+↓
+Use Cases
+↓
+API
+
+The architecture has been validated with multiple carrier formats without requiring modifications to:
+
+- Domain Layer
+- Repository Layer
+- Database Layer
+- API Layer
 
 ---
 
-# Core Principles
+# Project Metrics
 
-- Domain First
-- Carrier Agnostic
-- API Agnostic
-- Extensible Architecture
-- User-Owned Carrier Accounts
-- International Ready
+Current test suite:
 
----
+97 passing tests
 
-# Supported Pickup Types
+Coverage includes:
 
-```text
-STORE
-LOCKER
-```
-
----
-
-# Initial Carrier Coverage
-
-## MVP
-
-- Colissimo Pickup
-- Mondial Relay
-- Chronopost Pickup
-
-## V1 Expansion
-
-- GLS France
-- UPS Access Point
-- DPD France
+- Domain entities
+- SQLAlchemy models
+- Repositories
+- Use cases
+- API routers
+- Colissimo mapper
+- Colissimo provider
+- Mondial Relay mapper
+- Mondial Relay provider
 
 ---
 
 # Architecture
 
-The engine follows a Domain First architecture.
-
-High-level layers:
+## High-Level Architecture
 
 ```text
-Domain
-↓
-Application
-↓
-Providers
-↓
-Infrastructure
+Carrier Payload
+        ↓
+Provider Mapper
+        ↓
+PickupPointModel
+        ↓
+Application Use Cases
+        ↓
+FastAPI
+        ↓
+Clients
 ```
 
-Carrier-specific implementations remain isolated behind providers.
+## Provider Responsibility
+
+Providers are responsible for:
+
+- Retrieving carrier data
+- Converting carrier payloads
+- Exposing normalized pickup points
+
+Business logic never consumes carrier payloads directly.
 
 ---
 
-# Project Documentation
-
-## Product Documentation
-
-- docs/product-vision.md
-- docs/architecture.md
-- docs/roadmap.md
-
-## Functional Documentation
-
-- docs/domain-model.md
-- docs/database-design.md
-
-## Development Documentation
-
-- docs/coding-standards.md
-- docs/development-guide.md
-
----
-
-# Technology Stack
-
-Planned stack:
-
-- Python 3.14+
-- FastAPI
-- PostgreSQL
-- SQLAlchemy
-- Alembic
-- Pytest
-- Ruff
-
----
-
-# Roadmap
-
-| Version | Description            |
-| ------- | ---------------------- |
-| V1      | Foundation             |
-| V2      | Resolution Engine      |
-| V3      | Intelligence Layer     |
-| V4      | Universal PUDO Portal  |
-| V5      | Commerce Workflows     |
-| V6      | Ecosystem Integrations |
-
-See:
+# Project Structure
 
 ```text
-docs/roadmap.md
-```
+src/
+└── universal_pudo/
+    ├── api/
+    │   ├── routers/
+    │   └── schemas/
+    │
+    ├── application/
+    │   └── use_cases/
+    │
+    ├── domain/
+    │
+    ├── infrastructure/
+    │   └── database/
+    │       ├── models/
+    │       └── repositories/
+    │
+    └── providers/
+        ├── base/
+        ├── mock/
+        ├── colissimo/
+        └── mondial_relay/
 
-for details.
+tests/
+├── api/
+├── application/
+├── domain/
+├── infrastructure/
+└── providers/
+
+docs/
+├── adr/
+├── architecture.md
+└── roadmap.md
+```
 
 ---
 
-# Repository Status
+# Provider Validation Matrix
 
-Current Status:
+| Provider      | Mapper | Provider | Tests |
+| ------------- | ------ | -------- | ----- |
+| Mock          | N/A    | ✅       | ✅    |
+| Colissimo     | ✅     | ✅       | ✅    |
+| Mondial Relay | ✅     | ✅       | ✅    |
+
+---
+
+# Accepted Architecture Decisions
+
+## ADR-0001
+
+Provider Mapping Strategy
+
+Carrier payloads shall never be exposed outside provider implementations.
+
+Canonical representation:
 
 ```text
-Planning & Architecture Phase
+PickupPointModel
 ```
 
-The repository is currently focused on:
+Flow:
 
-- Product design
-- Architecture
-- Domain modeling
-- Database design
-
-Implementation will start after the project foundations are finalized.
-
----
-
-# Project Independence
-
-Universal PUDO Engine is an independent project.
-
-It is not affiliated with, endorsed by or dependent on any specific OMS, WMS, marketplace, carrier, software vendor or employer.
-
-All examples, payloads and demonstrations are generic.
+```text
+Carrier Payload
+↓
+Provider Mapper
+↓
+PickupPointModel
+↓
+Use Cases
+↓
+API
+```
 
 ---
 
-# Contributing
+# Running Tests
 
-Contribution guidelines will be provided in a future release.
+Run all tests:
+
+```bash
+pytest
+```
+
+Run provider tests:
+
+```bash
+pytest tests/providers -v
+```
+
+Run a specific file:
+
+```bash
+pytest tests/providers/test_mondial_relay_provider.py -v
+```
 
 ---
 
-# License
+# Development Workflow
 
-License selection has not yet been finalized.
+Recommended workflow:
 
-The project will likely adopt either:
+```text
+Business Requirement
+↓
+Domain Model
+↓
+Use Case
+↓
+Tests
+↓
+Implementation
+↓
+Pytest
+↓
+Git Commit
+```
 
-- MIT
-- Apache 2.0
+For architecture-impacting changes:
+
+```text
+Decision
+↓
+ADR
+↓
+Implementation
+```
+
+---
+
+# Current Roadmap
+
+## Phase 1 - Foundations
+
+Status: Complete
+
+- Domain Layer
+- Repository Layer
+- Database Layer
+- API Layer
+- Testing Foundation
+
+## Phase 2 - Provider Architecture
+
+Status: Complete
+
+- PickupProvider contract
+- Provider Mapping Strategy
+- ADR-0001
+
+## Phase 3 - Multi-Carrier Validation
+
+Status: Complete
+
+Validated carriers:
+
+- Mock
+- Colissimo
+- Mondial Relay
+
+Result:
+
+PickupPointModel successfully supports multiple carrier payload formats.
+
+## Phase 4 - First Live Provider
+
+Status: Next
+
+Candidate carriers:
+
+- Mondial Relay
+- Colissimo
+
+Expected deliverables:
+
+- Real carrier payload retrieval
+- Live provider implementation
+- Credential management
+- Error handling
+- Mapper integration
+
+Success criteria:
+
+```text
+Real Carrier Payload
+↓
+Mapper
+↓
+PickupPointModel
+```
+
+without architecture changes.
+
+## Phase 5 - Additional Carriers
+
+Future candidates:
+
+- DPD
+- GLS
+- UPS
+- InPost
+
+---
+
+# Project Health
+
+Architecture Status: Stable
+
+Provider Layer Status: Validated
+
+Test Status:
+
+✅ 97 / 97 passing
+
+Current Focus:
+
+First live carrier integration.

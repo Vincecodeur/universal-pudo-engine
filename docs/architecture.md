@@ -266,6 +266,27 @@ V1 Expansion:
 - UPS Provider
 - DPD France Provider
 
+## Provider Validation Matrix
+
+| Carrier       | Mapper | Provider | Tests |
+| ------------- | ------ | -------- | ----- |
+| Mock          | N/A    | ✅       | ✅    |
+| Colissimo     | ✅     | ✅       | ✅    |
+| Mondial Relay | ✅     | ✅       | ✅    |
+
+Current test count:
+
+97 passing tests
+
+Architecture assumption validated:
+
+Different carrier payload formats can be normalized into PickupPointModel without modifications to:
+
+- Domain Layer
+- Repository Layer
+- API Layer
+- Database Layer
+
 ---
 
 # 8. Carrier Capabilities

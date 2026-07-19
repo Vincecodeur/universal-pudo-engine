@@ -6,6 +6,57 @@ The format is inspired by Keep a Changelog.
 
 ---
 
+## [0.5.0] - 2026-07-19
+
+### Added
+
+#### Mondial Relay
+
+- Added MondialRelayMapper
+- Added MondialRelayPickupProvider
+- Added Mondial Relay test fixtures
+
+#### Provider Layer
+
+- Validated multi-carrier mapping strategy
+- Validated PickupPointModel with multiple carriers
+- Confirmed carrier-agnostic architecture
+
+#### Documentation
+
+- Added ADR-0001 Provider Mapping Strategy
+- Added provider_mapping_strategy.md
+
+#### Tests
+
+Added:
+
+- test_mondial_relay_mapper.py
+- test_mondial_relay_provider.py
+
+Test suite:
+
+88 → 97 passing tests
+
+### Architecture Validation
+
+Validated:
+
+Colissimo Payload
+↓
+PickupPointModel
+
+Mondial Relay Payload
+↓
+PickupPointModel
+
+without modifications to:
+
+- Domain Layer
+- Repository Layer
+- API Layer
+- Database Layer
+
 ## [Unreleased]
 
 ### Added

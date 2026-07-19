@@ -1,301 +1,140 @@
-(.venv) PS C:\Users\vince\Desktop\Projet ANchanto à lancer\universal-pudo-engine> Get-ChildItem -Recurse data
-(.venv) PS C:\Users\vince\Desktop\Projet ANchanto à lancer\universal-pudo-engine> tree src /f
-Structure du dossier pour le volume OS
-Le numéro de série du volume est 00000198 E474:73BA
-C:\USERS\VINCE\DESKTOP\PROJET ANCHANTO À LANCER\UNIVERSAL-PUDO-ENGINE\SRC
-├───universal_pudo
-│   │   main.py
-│   │   __init__.py
-│   │   
-│   ├───api
-│   │   │   dependencies.py
-│   │   │   __init__.py
-│   │   │   
-│   │   ├───routers
-│   │   │   │   carriers.py
-│   │   │   │   pickup_points.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           carriers.cpython-314.pyc
-│   │   │           pickup_points.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   ├───schemas
-│   │   │   │   carrier.py
-│   │   │   │   pickup_point.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           carrier.cpython-314.pyc
-│   │   │           pickup_point.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   └───__pycache__
-│   │           dependencies.cpython-314.pyc
-│   │           __init__.cpython-314.pyc
-│   │           
-│   ├───application
-│   │   │   __init__.py
-│   │   │   
-│   │   ├───use_cases
-│   │   │   │   get_carrier.py
-│   │   │   │   get_pickup_point.py
-│   │   │   │   list_carriers.py
-│   │   │   │   list_pickup_points.py
-│   │   │   │   search_pickup_points.py
-│   │   │   │   search_pickup_points_by_radius.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           get_carrier.cpython-314.pyc
-│   │   │           get_pickup_point.cpython-314.pyc
-│   │   │           list_carriers.cpython-314.pyc
-│   │   │           list_pickup_points.cpython-314.pyc
-│   │   │           search_pickup_points.cpython-314.pyc
-│   │   │           search_pickup_points_by_radius.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   └───__pycache__
-│   │           __init__.cpython-314.pyc
-│   │           
-│   ├───domain
-│   │   │   __init__.py
-│   │   │   
-│   │   ├───enums
-│   │   │   │   carrier_capability.py
-│   │   │   │   carrier_lifecycle.py
-│   │   │   │   pickup_type.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           carrier_capability.cpython-314.pyc
-│   │   │           carrier_lifecycle.cpython-314.pyc
-│   │   │           pickup_type.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   ├───models
-│   │   │   │   carrier.py
-│   │   │   │   carrier_account.py
-│   │   │   │   pickup_point.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           carrier.cpython-314.pyc
-│   │   │           carrier_account.cpython-314.pyc
-│   │   │           pickup_point.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   ├───value_objects
-│   │   │   │   address.py
-│   │   │   │   geolocation.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           address.cpython-314.pyc
-│   │   │           geolocation.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   └───__pycache__
-│   │           __init__.cpython-314.pyc
-│   │           
-│   ├───infrastructure
-│   │   │   __init__.py
-│   │   │   
-│   │   ├───database
-│   │   │   │   base.py
-│   │   │   │   session.py
-│   │   │   │   settings.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   ├───models
-│   │   │   │   │   carrier_account_model.py
-│   │   │   │   │   carrier_model.py
-│   │   │   │   │   pickup_point_model.py
-│   │   │   │   │   __init__.py
-│   │   │   │   │   
-│   │   │   │   └───__pycache__
-│   │   │   │           carrier_account_model.cpython-314.pyc
-│   │   │   │           carrier_model.cpython-314.pyc
-│   │   │   │           pickup_point_model.cpython-314.pyc
-│   │   │   │           __init__.cpython-314.pyc
-│   │   │   │           
-│   │   │   ├───repositories
-│   │   │   │   │   carrier_account_repository.py
-│   │   │   │   │   carrier_repository.py
-│   │   │   │   │   pickup_point_repository.py
-│   │   │   │   │   __init__.py
-│   │   │   │   │   
-│   │   │   │   └───__pycache__
-│   │   │   │           carrier_account_repository.cpython-314.pyc
-│   │   │   │           carrier_repository.cpython-314.pyc
-│   │   │   │           pickup_point_repository.cpython-314.pyc
-│   │   │   │           __init__.cpython-314.pyc
-│   │   │   │           
-│   │   │   └───__pycache__
-│   │   │           base.cpython-314.pyc
-│   │   │           session.cpython-314.pyc
-│   │   │           settings.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   └───__pycache__
-│   │           __init__.cpython-314.pyc
-│   │           
-│   ├───providers
-│   │   │   __init__.py
-│   │   │   
-│   │   ├───base
-│   │   │   │   pickup_provider.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           pickup_provider.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   ├───json
-│   │   │       json_pickup_provider.py
-│   │   │       __init__.py
-│   │   │       
-│   │   ├───mock
-│   │   │   │   mock_pickup_provider.py
-│   │   │   │   __init__.py
-│   │   │   │   
-│   │   │   └───__pycache__
-│   │   │           mock_pickup_provider.cpython-314.pyc
-│   │   │           __init__.cpython-314.pyc
-│   │   │           
-│   │   └───__pycache__
-│   │           __init__.cpython-314.pyc
-│   │           
-│   ├───scripts
-│   │   │   seed_demo_data.py
-│   │   │   __init__.py
-│   │   │   
-│   │   └───__pycache__
-│   │           seed_demo_data.cpython-314.pyc
-│   │           __init__.cpython-314.pyc
-│   │           
-│   └───__pycache__
-│           main.cpython-314.pyc
-│           __init__.cpython-314.pyc
-│           
-└───universal_pudo_engine.egg-info
-        dependency_links.txt
-        PKG-INFO
-        requires.txt
-        SOURCES.txt
-        top_level.txt
-        
-(.venv) PS C:\Users\vince\Desktop\Projet ANchanto à lancer\universal-pudo-engine> tree tests /f
-Structure du dossier pour le volume OS
-Le numéro de série du volume est 0000025D E474:73BA
-C:\USERS\VINCE\DESKTOP\PROJET ANCHANTO À LANCER\UNIVERSAL-PUDO-ENGINE\TESTS
-│   conftest.py
-│   
-├───api
-│   │   test_main.py
-│   │   
-│   ├───routers
-│   │   │   test_carriers_router.py
-│   │   │   test_pickup_points_router.py
-│   │   │   
-│   │   └───__pycache__
-│   │           test_carriers_router.cpython-314-pytest-9.1.1.pyc
-│   │           test_pickup_points_router.cpython-314-pytest-9.1.1.pyc
-│   │           
-│   ├───schemas
-│   │   │   test_carrier_schema.py
-│   │   │   test_pickup_point_schema.py
-│   │   │   
-│   │   └───__pycache__
-│   │           test_carrier_schema.cpython-314-pytest-9.1.1.pyc
-│   │           test_pickup_point_schema.cpython-314-pytest-9.1.1.pyc
-│   │           
-│   └───__pycache__
-│           test_carriers_api.cpython-314-pytest-9.1.1.pyc
-│           test_carriers_api.cpython-314.pyc
-│           test_dependencies.cpython-314-pytest-9.1.1.pyc
-│           test_main.cpython-314-pytest-9.1.1.pyc
-│           test_pickup_points_api.cpython-314-pytest-9.1.1.pyc
-│           test_pickup_points_api.cpython-314.pyc
-│           
-├───application
-│   └───use_cases
-│       │   test_get_carrier.py
-│       │   test_get_pickup_point.py
-│       │   test_list_carriers.py
-│       │   test_list_pickup_points.py
-│       │   test_search_pickup_points.py
-│       │   
-│       └───__pycache__
-│               test_get_carrier.cpython-314-pytest-9.1.1.pyc
-│               test_get_pickup_point.cpython-314-pytest-9.1.1.pyc
-│               test_list_carriers.cpython-314-pytest-9.1.1.pyc
-│               test_list_pickup_points.cpython-314-pytest-9.1.1.pyc
-│               test_search_pickup_points.cpython-314-pytest-9.1.1.pyc
-│               
-├───domain
-│   │   test_address.py
-│   │   test_carrier.py
-│   │   test_carrier_account.py
-│   │   test_carrier_capability.py
-│   │   test_carrier_lifecycle.py
-│   │   test_geolocation.py
-│   │   test_pickup_point.py
-│   │   test_pickup_type.py
-│   │   
-│   └───__pycache__
-│           test_address.cpython-314-pytest-9.1.1.pyc
-│           test_carrier.cpython-314-pytest-9.1.1.pyc
-│           test_carrier_account.cpython-314-pytest-9.1.1.pyc
-│           test_carrier_capability.cpython-314-pytest-9.1.1.pyc
-│           test_carrier_lifecycle.cpython-314-pytest-9.1.1.pyc
-│           test_geolocation.cpython-314-pytest-9.1.1.pyc
-│           test_pickup_point.cpython-314-pytest-9.1.1.pyc
-│           test_pickup_type.cpython-314-pytest-9.1.1.pyc
-│           
-├───infrastructure
-│   └───database
-│       │   test_base.py
-│       │   test_session.py
-│       │   test_settings.py
-│       │   
-│       ├───models
-│       │   │   test_carrier_account_model.py
-│       │   │   test_carrier_model.py
-│       │   │   test_metadata.py
-│       │   │   test_pickup_point_model.py
-│       │   │   
-│       │   └───__pycache__
-│       │           test_carrier_account_model.cpython-314-pytest-9.1.1.pyc
-│       │           test_carrier_model.cpython-314-pytest-9.1.1.pyc
-│       │           test_metadata.cpython-314-pytest-9.1.1.pyc
-│       │           test_pickup_point_model.cpython-314-pytest-9.1.1.pyc
-│       │           
-│       ├───repositories
-│       │   │   test_carrier_account_repository.py
-│       │   │   test_carrier_repository.py
-│       │   │   test_pickup_point_repository.py
-│       │   │   __init__.py
-│       │   │   
-│       │   └───__pycache__
-│       │           test_carrier_account_repository.cpython-314-pytest-9.1.1.pyc
-│       │           test_carrier_repository.cpython-314-pytest-9.1.1.pyc
-│       │           test_pickup_point_repository.cpython-314-pytest-9.1.1.pyc
-│       │           __init__.cpython-314.pyc
-│       │           
-│       └───__pycache__
-│               conftest.cpython-314-pytest-9.1.1.pyc
-│               test_base.cpython-314-pytest-9.1.1.pyc
-│               test_session.cpython-314-pytest-9.1.1.pyc
-│               test_settings.cpython-314-pytest-9.1.1.pyc
-│               
-├───providers
-│   │   test_mock_pickup_provider.py
-│   │   
-│   └───__pycache__
-│           test_mock_pickup_provider.cpython-314-pytest-9.1.1.pyc
-│           test_mock_pickup_provider.cpython-314.pyc
-│           
-└───__pycache__
-        conftest.cpython-314-pytest-9.1.1.pyc
+universal-pudo-engine
+│
+├── README.md
+├── CHANGELOG.md
+├── pyproject.toml
+├── alembic.ini
+├── .env
+│
+├── docs
+│   │
+│   ├── architecture.md
+│   ├── roadmap.md
+│   ├── project_status.md
+│   ├── project_structure.txt
+│   │
+│   └── adr
+│       │
+│       ├── README.md
+│       └── ADR-0001-provider-mapping-strategy.md
+│
+├── migrations
+│
+├── src
+│   │
+│   └── universal_pudo
+│       │
+│       ├── api
+│       │   │
+│       │   ├── routers
+│       │   │   ├── carriers_router.py
+│       │   │   └── pickup_points_router.py
+│       │   │
+│       │   └── schemas
+│       │       ├── carrier_schema.py
+│       │       └── pickup_point_schema.py
+│       │
+│       ├── application
+│       │   │
+│       │   └── use_cases
+│       │       ├── get_carrier.py
+│       │       ├── get_pickup_point.py
+│       │       ├── list_carriers.py
+│       │       ├── list_pickup_points.py
+│       │       └── search_pickup_points.py
+│       │
+│       ├── domain
+│       │   │
+│       │   ├── address.py
+│       │   ├── carrier.py
+│       │   ├── carrier_account.py
+│       │   ├── carrier_capability.py
+│       │   ├── carrier_lifecycle.py
+│       │   ├── geolocation.py
+│       │   ├── pickup_point.py
+│       │   └── pickup_type.py
+│       │
+│       ├── infrastructure
+│       │   │
+│       │   └── database
+│       │       │
+│       │       ├── models
+│       │       │   ├── carrier_account_model.py
+│       │       │   ├── carrier_model.py
+│       │       │   └── pickup_point_model.py
+│       │       │
+│       │       ├── repositories
+│       │       │   ├── carrier_account_repository.py
+│       │       │   ├── carrier_repository.py
+│       │       │   └── pickup_point_repository.py
+│       │       │
+│       │       ├── base.py
+│       │       ├── session.py
+│       │       └── settings.py
+│       │
+│       ├── providers
+│       │   │
+│       │   ├── base
+│       │   │   └── pickup_provider.py
+│       │   │
+│       │   ├── mock
+│       │   │   └── mock_pickup_provider.py
+│       │   │
+│       │   ├── colissimo
+│       │   │   ├── mapper.py
+│       │   │   └── colissimo_pickup_provider.py
+│       │   │
+│       │   └── mondial_relay
+│       │       ├── mapper.py
+│       │       └── mondial_relay_pickup_provider.py
+│       │
+│       └── main.py
+│
+└── tests
+    │
+    ├── api
+    ├── application
+    ├── domain
+    ├── infrastructure
+    │
+    └── providers
+        │
+        ├── test_mock_pickup_provider.py
+        │
+        ├── test_colissimo_mapper.py
+        ├── test_colissimo_pickup_provider.py
+        │
+        ├── test_mondial_relay_mapper.py
+        └── test_mondial_relay_provider.py
+
+
+--------------------------------------------------
+CURRENT METRICS
+--------------------------------------------------
+
+Providers Implemented:
+
+✅ Mock
+✅ Colissimo
+✅ Mondial Relay
+
+Mappers Implemented:
+
+✅ Colissimo
+✅ Mondial Relay
+
+ADRs:
+
+✅ ADR-0001
+
+Tests:
+
+✅ 97 Passing Tests
+
+Project Stage:
+
+✅ Multi-Carrier Architecture Validated
+
+Next Stage:
+
+⏳ First Live Carrier Integration
