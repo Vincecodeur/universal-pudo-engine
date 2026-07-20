@@ -391,3 +391,148 @@ def test_search_pickup_points_by_filters(session: Session) -> None:
 
     assert len(results) == 1
     assert results[0].id == "pickup-point-search-001"
+    
+    
+def test_find_by_carrier_pickup_id( session: Session,) -> None:
+    carrier = CarrierModel(
+    id="carrier-find-001",
+    code="carrier_find_001",
+    name="Carrier Find",
+    lifecycle="ACTIVE",
+    supported_countries=["FR"],
+    capabilities=["SEARCH_PICKUP_POINTS"],
+)
+
+    session.add(carrier)
+    session.flush()
+
+    repository = PickupPointRepository(
+        session
+    )
+
+    pickup_point = PickupPointModel(
+        id="pickup-find-001",
+        carrier_id="carrier-find-001",
+        carrier_pickup_id="FIND-001",
+        name="Find Pickup Point",
+        pickup_type="STORE",
+        street_line_1="1 Test Street",
+        street_line_2=None,
+        postal_code="75001",
+        city="Paris",
+        state_or_region=None,
+        country_code="FR",
+        latitude=48.8566,
+        longitude=2.3522,
+        opening_hours=None,
+        active=True,
+    )
+
+    repository.save(
+        pickup_point
+    )
+
+    session.flush()
+
+    result = (
+        repository.find_by_carrier_pickup_id(
+            "carrier-find-001",
+            "FIND-001",
+        )
+    )
+
+    assert result is not None
+    assert result.id == "pickup-find-001"
+    
+def test_upsert_updates_existing_pickup_point(
+    session: Session,
+) -> None:
+    carrier = CarrierModel(
+        id="carrier-upsert-001",
+        code="carrier_upsert_001",
+        name="Carrier Upsert",
+        lifecycle="ACTIVE",
+        supported_countries=["FR"],
+        capabilities=["SEARCH_PICKUP_POINTS"],
+    )
+
+    session.add(carrier)
+
+    session.flush()
+
+    repository = PickupPointRepository(
+        session
+    )
+
+    original = PickupPointModel(
+        id="pickup-upsert-original",
+        carrier_id="carrier-upsert-001",
+        carrier_pickup_id="UPSERT-001",
+        name="Original Name",
+        pickup_type="STORE",
+        street_line_1="1 Test Street",
+        street_line_2=None,
+        postal_code="75001",
+        city="Paris",
+        state_or_region=None,
+        country_code="FR",
+        latitude=48.8566,
+        longitude=2.3522,
+        opening_hours=None,
+        active=True,
+    )
+
+    repository.save(
+        original
+    )
+
+    session.flush()
+
+    updated = PickupPointModel(
+        id="pickup-upsert-new",
+        carrier_id="carrier-upsert-001",
+        carrier_pickup_id="UPSERT-001",
+        name="Updated Name",
+        pickup_type="LOCKER",
+        street_line_1="99 Updated Street",
+        street_line_2=None,
+        postal_code="75009",
+        city="Paris",
+        state_or_region=None,
+        country_code="FR",
+        latitude=48.8766,
+        longitude=2.3622,
+        opening_hours="24/7",
+        active=True,
+    )
+
+    repository.upsert(
+        updated
+    )
+
+    session.flush()
+
+    result = (
+        repository.find_by_carrier_pickup_id(
+            "carrier-upsert-001",
+            "UPSERT-001",
+        )
+    )
+
+    assert result is not None
+    assert result.name == "Updated Name"
+
+    count = (
+        session.query(
+            PickupPointModel
+        )
+        .filter(
+            PickupPointModel.carrier_id
+            == "carrier-upsert-001",
+            PickupPointModel.carrier_pickup_id
+            == "UPSERT-001",
+        )
+        .count()
+    )
+
+    assert count == 1    

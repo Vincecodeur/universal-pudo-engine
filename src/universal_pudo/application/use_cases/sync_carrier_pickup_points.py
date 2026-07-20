@@ -35,7 +35,7 @@ class SyncCarrierPickupPointsUseCase:
         )
 
         for pickup_point in pickup_points:
-            self.repository.save(
+            self.repository.upsert(
                 pickup_point
             )
 

@@ -57,7 +57,7 @@ def test_sync_pickup_points_saves_all_results() -> None:
 
     assert result == 3
 
-    assert repository.save.call_count == 3
+    assert repository.upsert.call_count == 3
 
 
 def test_sync_returns_zero_when_no_pickup_points() -> None:
@@ -84,4 +84,4 @@ def test_sync_returns_zero_when_no_pickup_points() -> None:
 
     assert result == 0
 
-    repository.save.assert_not_called()
+    repository.upsert.assert_not_called()

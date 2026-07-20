@@ -31,6 +31,24 @@ class PickupPointRepository:
             pickup_id,
         )
 
+    def find_by_carrier_pickup_id(
+            self,
+            carrier_id: str,
+            carrier_pickup_id: str,
+        ) -> PickupPointModel | None:
+            return (
+                self.session.query(
+                    PickupPointModel
+                )
+                .filter(
+                    PickupPointModel.carrier_id
+                    == carrier_id,
+                    PickupPointModel.carrier_pickup_id
+                    == carrier_pickup_id,
+                )
+                .first()
+            )
+
     def list_by_carrier(
         self,
         carrier_id: str,
@@ -128,6 +146,40 @@ class PickupPointRepository:
         self.session.add(
             pickup_point
         )
+        
+    def upsert(
+            self,
+            pickup_point: PickupPointModel,
+        ) -> None:
+            existing = (
+                self.find_by_carrier_pickup_id(
+                    carrier_id=pickup_point.carrier_id,
+                    carrier_pickup_id=pickup_point.carrier_pickup_id,
+                )
+            )
+
+            if existing is None:
+                self.save(
+                    pickup_point
+                )
+                return
+
+            existing.name = pickup_point.name
+            existing.pickup_type = pickup_point.pickup_type
+            existing.street_line_1 = pickup_point.street_line_1
+            existing.street_line_2 = pickup_point.street_line_2
+            existing.postal_code = pickup_point.postal_code
+            existing.city = pickup_point.city
+            existing.state_or_region = (
+                pickup_point.state_or_region
+            )
+            existing.country_code = pickup_point.country_code
+            existing.latitude = pickup_point.latitude
+            existing.longitude = pickup_point.longitude
+            existing.opening_hours = (
+                pickup_point.opening_hours
+            )
+            existing.active = pickup_point.active        
 
     def delete(
         self,
