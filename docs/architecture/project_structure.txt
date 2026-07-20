@@ -1,516 +1,108 @@
-# Universal PUDO Engine - Project Status
-
-Last Updated: 2026-07-20
-
----
-
-# PROJECT STATUS
-
-Current Status:
-
-PHASE 1 ✅ COMPLETED
-PHASE 2 ✅ COMPLETED
-PHASE 3 ✅ COMPLETED
-PHASE 4 ✅ COMPLETED
-PHASE 5 ✅ COMPLETED
-PHASE 6 ✅ COMPLETED
-PHASE 7.1 ✅ COMPLETED
-
-Current Test Count:
-
-126 / 126 PASSING
-
----
-
-# PROJECT VISION
-
-Universal PUDO Engine is a carrier-agnostic pickup point platform designed to:
-
-- Normalize heterogeneous carrier APIs
-- Provide a canonical pickup point model
-- Support multiple carrier integrations
-- Store pickup points in PostgreSQL
-- Enable hybrid search strategies
-- Demonstrate integration architecture best practices
-
-Target Architecture:
-
-Carrier APIs
-↓
-Providers
-↓
-Canonical Models
-↓
-Synchronization Engine
-↓
-PostgreSQL
-↓
-Search API
-
----
-
-# PHASE 1 - FOUNDATIONS
-
-Status: COMPLETED
-
-Completed:
-
-✅ Domain Layer
-
-✅ SQLAlchemy Models
-
-✅ Repository Layer
-
-✅ PostgreSQL Support
-
-✅ Alembic Migrations
-
-✅ FastAPI API
-
-✅ Swagger / OpenAPI
-
-✅ Carrier Endpoints
-
-✅ Pickup Point Endpoints
-
-✅ Test Infrastructure
-
-Result:
-
-Stable backend foundation with database, API and test framework.
-
----
-
-# PHASE 2 - PROVIDER ARCHITECTURE
-
-Status: COMPLETED
-
-Completed:
-
-✅ PickupProvider Contract
-
-✅ Provider Layer
-
-✅ Mock Provider
-
-✅ Mapping Strategy
-
-Architecture:
-
-Carrier Payload
-↓
-Provider Mapper
-↓
-PickupPointModel
-↓
-Use Cases
-↓
-API
-
-Result:
-
-Carrier implementations can be added without changing the domain layer.
-
----
-
-# PHASE 3 - MULTI-CARRIER VALIDATION
-
-Status: COMPLETED
-
-Validated Providers:
-
-✅ Mock Provider
-
-✅ Colissimo
-
-- Mapper
-- Provider
-- Tests
-
-✅ Mondial Relay
-
-- Mapper
-- Provider
-- Tests
-
-Result:
-
-PickupPointModel successfully supports multiple carrier payload formats.
-
-No modifications required in:
-
-✅ Domain Layer
-
-✅ Repository Layer
-
-✅ Database Layer
-
-✅ API Layer
-
----
-
-# PHASE 4 - LIVE CARRIER VALIDATION
-
-Status: COMPLETED
-
-Validated Carriers:
-
-✅ Mondial Relay
-
-✅ Colissimo
-
----
-
-## Mondial Relay
-
-Completed:
-
-✅ Security Hash Generation
-
-✅ SOAP Envelope Generation
-
-✅ SOAP Client
-
-✅ XML Response Parser
-
-✅ Real XML Validation
-
-✅ Mapping Validation
-
-✅ Offline Fixture Validation
-
-Validated Flow:
-
-Mondial Relay SOAP
-↓
-HTTP
-↓
-XML Response
-↓
-ResponseParser
-↓
-dict
-↓
-Mapper
-↓
-PickupPointModel
-
-Results:
-
-✅ Credentials Accepted
-
-✅ SOAP Endpoint Reachable
-
-✅ XML Parsed Successfully
-
-✅ Pickup Points Retrieved
-
-✅ Canonical Model Generated
-
----
-
-## Colissimo
-
-Completed:
-
-✅ REST Client
-
-✅ Real JSON Validation
-
-✅ Mapping Validation
-
-✅ Offline Fixture Validation
-
-Validated Flow:
-
-Colissimo REST
-↓
-HTTP
-↓
-JSON Response
-↓
-Mapper
-↓
-PickupPointModel
-
-Results:
-
-✅ API Key Validated
-
-✅ Endpoint Reachable
-
-✅ JSON Parsed Successfully
-
-✅ Pickup Points Retrieved
-
-✅ Canonical Model Generated
-
----
-
-# PHASE 5 - PRODUCTION LIVE PROVIDERS
-
-Status: COMPLETED
-
-Completed:
-
-✅ MondialRelayClient
-
-✅ MondialRelayLiveProvider
-
-✅ ColissimoClient
-
-✅ ColissimoLiveProvider
-
-Results:
-
-Provider abstraction validated on:
-
-✅ SOAP/XML
-
-✅ REST/JSON
-
-Architecture:
-
-PickupProvider
-├── MockPickupProvider
-├── MondialRelayLiveProvider
-└── ColissimoLiveProvider
-
----
-
-# PHASE 6 - PROVIDER FACTORY
-
-Status: COMPLETED
-
-Completed:
-
-✅ ProviderFactory
-
-✅ ProviderNotFoundError
-
-✅ Provider Factory Tests
-
-✅ SearchLivePickupPointsUseCase
-
-Architecture:
-
-carrier_id
-↓
-ProviderFactory
-↓
-Provider
-
-Supported Providers:
-
-✅ mondial-relay
-
-✅ colissimo
-
-Results:
-
-✅ Centralized Provider Resolution
-
-✅ Reusable Provider Selection
-
-✅ Fully Tested
-
----
-
-# PHASE 7.1 - CARRIER SYNCHRONIZATION ENGINE V1
-
-Status: COMPLETED
-
-Completed:
-
-✅ SyncCarrierPickupPointsUseCase
-
-✅ Synchronization Tests
-
-Synchronization Flow:
-
-ProviderFactory
-↓
-Provider
-↓
-PickupPointModel
-↓
-PickupPointRepository
-↓
-PostgreSQL
-
-Behavior:
-
-✅ Resolve Provider
-
-✅ Retrieve Carrier Pickup Points
-
-✅ Persist Pickup Points
-
-✅ Return Synchronization Count
-
-Current Synchronization Strategy:
-
-- save() per PickupPointModel
-- No upsert yet
-- No freshness tracking yet
-
-Result:
-
-First end-to-end synchronization flow available.
-
----
-
-# CURRENT TEST STATUS
-
-Domain Tests ✅
-
-Model Tests ✅
-
-Repository Tests ✅
-
-Use Case Tests ✅
-
-API Tests ✅
-
-Provider Tests ✅
-
-Factory Tests ✅
-
-Synchronization Tests ✅
-
-Live Validation Tests ✅
-
-Fixture Validation Tests ✅
-
----
-
-# CURRENT ARCHITECTURE STATUS
-
-Domain Layer:
-
-✅ Stable
-
-Repository Layer:
-
-✅ Stable
-
-Database Layer:
-
-✅ Stable
-
-API Layer:
-
-✅ Stable
-
-Provider Layer:
-
-✅ Stable
-
-Provider Factory:
-
-✅ Stable
-
-Carrier Synchronization:
-
-✅ Initial Version Completed
-
-Live Connectivity:
-
-✅ Validated
-
----
-
-# KNOWN LIMITATIONS
-
-Not Yet Implemented:
-
-❌ Provider Health Checks
-
-❌ Data Freshness Tracking
-
-❌ last_sync_at
-
-❌ last_seen_at
-
-❌ Source Tracking
-
-❌ Upsert Strategy
-
-❌ Bulk Synchronization
-
-❌ Automatic Deactivation of Missing Pickup Points
-
-❌ Hybrid Search Logic
-
-❌ Live Search Endpoint
-
----
-
-# NEXT PHASE
-
-Phase 7.2 - Synchronization Strategy
-
-Planned Objectives:
-
-✅ save_many()
-
-✅ upsert()
-
-✅ duplicate prevention
-
-✅ synchronization repeatability
-
-Future Target:
-
-Carrier API
-↓
-Provider
-↓
-Synchronization Engine
-↓
-PostgreSQL
-↓
-Hybrid Search Layer
-
----
-
-# CURRENT METRICS
-
-Passing Tests:
-
-126
-
-Live Carriers:
-
-2
-
-Validated Protocols:
-
-2
-
-SOAP/XML ✅
-
-REST/JSON ✅
-
-Provider Implementations:
-
-3
-
-- Mock
-- Mondial Relay
-- Colissimo
-
-Factory Implementations:
-
-1
-
-Synchronization Use Cases:
-
-1
-
-Overall Status:
-
-✅ Stable
-✅ Tested
-✅ Documented
-✅ Ready for Phase 7.2
+universal-pudo-engine/
+│
+├── .github/
+│
+├── docs/
+│   │
+│   ├── architecture/
+│   │   └── project_status.md
+│   │
+│   ├── diagrams/
+│   │   └── architecture.mmd
+│   │
+│   ├── database-design.md
+│   └── roadmap.md
+│
+├── migrations/
+│   │
+│   └── versions/
+│       └── 7b2c8f4a9d31_add_pickup_point_last_synced_at.py
+│
+├── src/
+│   │
+│   └── universal_pudo/
+│       │
+│       ├── api/
+│       │   │
+│       │   ├── routers/
+│       │   │   ├── carriers.py
+│       │   │   └── pickup_points.py
+│       │   │
+│       │   ├── schemas/
+│       │   │   ├── carrier.py
+│       │   │   └── pickup_point.py
+│       │   │
+│       │   └── dependencies.py
+│       │
+│       ├── application/
+│       │   │
+│       │   └── use_cases/
+│       │       │
+│       │       ├── get_carrier.py
+│       │       ├── get_pickup_point.py
+│       │       ├── list_carriers.py
+│       │       ├── list_pickup_points.py
+│       │       ├── search_pickup_points.py
+│       │       ├── search_pickup_points_by_radius.py
+│       │       ├── search_live_pickup_points.py
+│       │       ├── search_hybrid_pickup_points.py
+│       │       ├── sync_carrier_pickup_points.py
+│       │       └── deactivate_stale_pickup_points.py
+│       │
+│       ├── domain/
+│       │
+│       ├── infrastructure/
+│       │   │
+│       │   └── database/
+│       │       │
+│       │       ├── models/
+│       │       │   ├── carrier_account_model.py
+│       │       │   ├── carrier_model.py
+│       │       │   └── pickup_point_model.py
+│       │       │
+│       │       ├── repositories/
+│       │       │   ├── carrier_account_repository.py
+│       │       │   ├── carrier_repository.py
+│       │       │   └── pickup_point_repository.py
+│       │       │
+│       │       ├── base.py
+│       │       ├── session.py
+│       │       └── settings.py
+│       │
+│       ├── providers/
+│       │   │
+│       │   ├── base/
+│       │   │   └── pickup_provider.py
+│       │   │
+│       │   ├── factory/
+│       │   │   └── provider_factory.py
+│       │   │
+│       │   ├── colissimo/
+│       │   │
+│       │   ├── mondial_relay/
+│       │   │
+│       │   ├── mock/
+│       │   │
+│       │   └── exceptions.py
+│       │
+│       └── main.py
+│
+├── tests/
+│   │
+│   ├── api/
+│   │
+│   ├── application/
+│   │   └── use_cases/
+│   │       ├── test_search_hybrid_pickup_points.py
+│   │       └── test_deactivate_stale_pickup_points.py
+│   │
+│   ├── infrastructure/
+│   │
+│   ├── providers/
+│   │
+│   └── domain/
+│
+├── CHANGELOG.md
+├── project_structure.txt
+├── pyproject.toml
+└── README.md

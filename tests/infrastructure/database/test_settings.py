@@ -9,3 +9,8 @@ def test_settings_can_be_loaded() -> None:
     assert settings.database_url.startswith(
         "postgresql+psycopg://"
     )
+
+    assert (
+        settings.hybrid_search_cache_ttl_days
+        > 0
+    )

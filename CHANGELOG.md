@@ -4,29 +4,31 @@
 
 ### Added
 
-- last_synced_at field
-- freshness tracking
-- Alembic migration for synchronization metadata
-- find_stale_pickup_points()
-- DeactivateStalePickupPointsUseCase
-- stale pickup point detection
+- SearchHybridPickupPointsUseCase
+- Hybrid Search architecture
+- PostgreSQL-first search strategy
+- Automatic live provider fallback
+- Automatic cache population
+- hybrid_search_cache_ttl_days
+- is_cache_fresh()
+- Cache freshness validation
+- Automatic refresh when cache becomes stale
 
 ### Changed
 
-- Synchronization now tracks last synchronization date
-- Synchronization metadata is persisted
-- Pickup points can now be identified as stale
-- Automatic stale pickup point deactivation strategy introduced
+- Search flow now supports hybrid execution
+- Cache is no longer blindly trusted
+- Search now refreshes stale data automatically
 
 ### Tests
 
-- Added freshness tracking tests
-- Added stale pickup point repository tests
-- Added stale pickup point use case tests
+- Added Hybrid Search tests
+- Added cache freshness tests
+- Added stale cache refresh tests
 
 ### Current Status
 
-132 / 132 tests passing
+139 / 139 tests passing
 
 ### Git History
 
@@ -37,6 +39,10 @@ feat(sync): add freshness tracking and synchronization metadata
 ef76bc5
 
 feat(sync): add stale pickup point detection
+
+17af6f3
+
+docs: update roadmap after phase 7.5
 
 ## [0.6.0-dev] - 2026-07-19
 

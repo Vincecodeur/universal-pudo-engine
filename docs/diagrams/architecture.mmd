@@ -1,67 +1,53 @@
 flowchart TD
 
-    CarrierAPI["Carrier APIs"]
+    API["FastAPI"]
 
-    Colissimo["Colissimo API<br/>REST / JSON"]
+    SearchRequest["Search Request"]
 
-    MondialRelay["Mondial Relay API<br/>SOAP / XML"]
-
-    ProviderFactory["ProviderFactory"]
-
-    ColissimoProvider["ColissimoLiveProvider"]
-
-    MondialRelayProvider["MondialRelayLiveProvider"]
-
-    SearchLiveUseCase["SearchLivePickupPointsUseCase"]
-
-    SyncUseCase["SyncCarrierPickupPointsUseCase"]
-
-    StaleUseCase["DeactivateStalePickupPointsUseCase"]
-
-    PickupPointModel["PickupPointModel"]
-
-    Freshness["last_synced_at"]
+    HybridUseCase["SearchHybridPickupPointsUseCase"]
 
     Repository["PickupPointRepository"]
 
+    CacheCheck["is_cache_fresh()"]
+
+    ProviderFactory["ProviderFactory"]
+
+    Colissimo["ColissimoLiveProvider"]
+
+    MondialRelay["MondialRelayLiveProvider"]
+
+    Freshness["last_synced_at"]
+
     PostgreSQL["PostgreSQL"]
 
-    API["FastAPI"]
+    StaleUseCase["DeactivateStalePickupPointsUseCase"]
 
-    SearchEndpoint["/pickup-points/search"]
+    API --> SearchRequest
 
-    SearchRadiusEndpoint["/pickup-points/search-radius"]
+    SearchRequest --> HybridUseCase
 
-    DetailsEndpoint["/pickup-points/details/{id}"]
+    HybridUseCase --> Repository
 
-    Colissimo --> ColissimoProvider
+    Repository --> PostgreSQL
 
-    MondialRelay --> MondialRelayProvider
+    Repository --> CacheCheck
 
-    ColissimoProvider --> ProviderFactory
+    CacheCheck -->|Fresh| PostgreSQL
 
-    MondialRelayProvider --> ProviderFactory
+    CacheCheck -->|Stale| ProviderFactory
 
-    ProviderFactory --> SearchLiveUseCase
+    Repository -->|Cache Miss| ProviderFactory
 
-    ProviderFactory --> SyncUseCase
+    ProviderFactory --> Colissimo
 
-    SearchLiveUseCase --> PickupPointModel
+    ProviderFactory --> MondialRelay
 
-    SyncUseCase --> Freshness
+    Colissimo --> Freshness
+
+    MondialRelay --> Freshness
 
     Freshness --> Repository
 
     Repository --> PostgreSQL
 
     PostgreSQL --> StaleUseCase
-
-    StaleUseCase --> PickupPointModel
-
-    PostgreSQL --> API
-
-    API --> SearchEndpoint
-
-    API --> SearchRadiusEndpoint
-
-    API --> DetailsEndpoint

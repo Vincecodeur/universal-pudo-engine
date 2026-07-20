@@ -5,6 +5,10 @@ from math import radians
 from math import sin
 from math import sqrt
 
+from datetime import timedelta
+from datetime import timezone
+
+
 from sqlalchemy.orm import Session
 
 from universal_pudo.infrastructure.database.models.pickup_point_model import (
@@ -132,6 +136,28 @@ class PickupPointRepository:
             )
             .all()
         )
+        
+    def is_cache_fresh(
+        self,
+        pickup_points: list[PickupPointModel],
+        ttl_days: int,
+    ) -> bool:
+        if not pickup_points:
+            return False
+
+        now = datetime.now(
+            timezone.utc
+        )
+
+        cutoff = now - timedelta(
+            days=ttl_days
+        )
+
+        return all(
+            pickup_point.last_synced_at
+            >= cutoff
+            for pickup_point in pickup_points
+        )        
 
     def search_by_radius(
         self,

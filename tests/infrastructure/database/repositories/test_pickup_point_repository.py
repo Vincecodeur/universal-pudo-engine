@@ -420,3 +420,57 @@ def test_find_stale_pickup_points(
     assert ids == [
         "pickup-stale-001",
     ]
+    
+def test_cache_is_fresh(
+    session: Session,
+) -> None:
+    repository = PickupPointRepository(
+        session
+    )
+
+    fresh_date = datetime.now(
+        timezone.utc
+    )
+
+    pickup_point = create_pickup_point(
+        pickup_id="fresh-cache-001",
+        carrier_id="carrier-stale-001",
+        carrier_pickup_id="FRESH-001",
+        last_synced_at=fresh_date,
+    )
+
+    result = repository.is_cache_fresh(
+        [pickup_point],
+        ttl_days=7,
+    )
+
+    assert result is True
+
+
+def test_cache_is_stale(
+    session: Session,
+) -> None:
+    repository = PickupPointRepository(
+        session
+    )
+
+    stale_date = datetime(
+        2020,
+        1,
+        1,
+        tzinfo=timezone.utc,
+    )
+
+    pickup_point = create_pickup_point(
+        pickup_id="stale-cache-001",
+        carrier_id="carrier-stale-001",
+        carrier_pickup_id="STALE-001",
+        last_synced_at=stale_date,
+    )
+
+    result = repository.is_cache_fresh(
+        [pickup_point],
+        ttl_days=7,
+    )
+
+    assert result is False    

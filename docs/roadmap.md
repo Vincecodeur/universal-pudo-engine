@@ -16,7 +16,7 @@ Universal PUDO Engine is a carrier-agnostic pickup point platform designed to:
 
 Current Test Count:
 
-132 / 132 PASSING
+139 / 139 PASSING
 
 Validated Integrations:
 
@@ -70,42 +70,13 @@ Status: ✅ COMPLETED
 
 ✅ COMPLETED
 
-Delivered:
-
-- SyncCarrierPickupPointsUseCase
-- ProviderFactory integration
-- Live synchronization
-- PostgreSQL persistence
-
----
-
 ## Phase 7.3 - Upsert Strategy
 
 ✅ COMPLETED
 
-Delivered:
-
-- find_by_carrier_pickup_id()
-- upsert()
-
-Business Key:
-
-(carrier_id, carrier_pickup_id)
-
----
-
 ## Phase 7.4 - Data Freshness V1
 
 ✅ COMPLETED
-
-Delivered:
-
-- last_synced_at
-- Alembic migration
-- freshness tracking
-- synchronization metadata
-
----
 
 ## Phase 7.5 - Stale Pickup Point Detection
 
@@ -118,57 +89,90 @@ Delivered:
 - stale pickup point detection
 - automatic deactivation strategy
 
-Current Synchronization Flow:
-
-Carrier API
-↓
-Provider
-↓
-SyncCarrierPickupPointsUseCase
-↓
-last_synced_at
-↓
-Repository.upsert()
-↓
-PostgreSQL
-
-Stale Detection:
-
-PostgreSQL
-↓
-find_stale_pickup_points()
-↓
-DeactivateStalePickupPointsUseCase
-↓
-active = False
-
 ---
 
 # Phase 8 - Hybrid Search
+
+Status: IN PROGRESS
+
+## Phase 8.1 - Hybrid Search Core
+
+✅ COMPLETED
+
+Delivered:
+
+- SearchHybridPickupPointsUseCase
+- PostgreSQL-first search
+- Live provider fallback
+- Automatic cache population
+- Automatic synchronization after live search
+
+## Phase 8.2 - Fresh Cache Strategy
+
+✅ COMPLETED
+
+Delivered:
+
+- hybrid_search_cache_ttl_days
+- Repository cache freshness validation
+- is_cache_fresh()
+- Automatic refresh on stale cache
+- Cache TTL configuration
+
+Current Search Flow:
+
+Search Request
+↓
+PostgreSQL Search
+↓
+Results Found?
+├─ No
+│ ↓
+│ Live Provider
+│ ↓
+│ last_synced_at
+│ ↓
+│ upsert()
+│ ↓
+│ Return
+│
+└─ Yes
+↓
+is_cache_fresh()
+↓
+Fresh?
+├─ Yes → Return Cache
+└─ No
+↓
+Live Provider
+↓
+upsert()
+↓
+Return
+
+---
+
+# Phase 8.3 - FastAPI Integration
 
 Status: NEXT PHASE
 
 Objectives:
 
-- PostgreSQL-first search
-- Live provider fallback
-- Automatic cache population
-- Search latency reduction
-- Foundation for cache refresh strategy
+- Replace SearchPickupPointsUseCase
+- Use SearchHybridPickupPointsUseCase in API
+- Expose Hybrid Search through FastAPI
 
-Architecture:
+---
 
-PostgreSQL
-↓
-Results Found?
-├─ Yes → Return
-└─ No
-↓
-Live Provider
-↓
-Synchronization
-↓
-Return
+# Phase 8.4 - Search Metrics
+
+Status: Planned
+
+Features:
+
+- cache_hit
+- cache_miss
+- live_refresh
 
 ---
 
@@ -176,35 +180,8 @@ Return
 
 Status: Planned
 
-Features:
-
-- Health checks
-- Availability monitoring
-- Response time tracking
-
 ---
 
 # Phase 10 - Additional Carriers
 
 Status: Planned
-
-Candidates:
-
-- DPD
-- Chronopost
-- GLS
-- UPS
-- InPost
-
----
-
-# Success Criteria
-
-- Multi-carrier support
-- Live carrier integrations
-- Repeatable synchronization
-- Data freshness tracking
-- Stale pickup point detection
-- Hybrid search capability
-- Stable API
-- Fully documented architecture
