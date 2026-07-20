@@ -1,3 +1,4 @@
+from datetime import datetime
 from math import atan2
 from math import cos
 from math import radians
@@ -116,6 +117,22 @@ class PickupPointRepository:
 
         return query.all()
 
+    def find_stale_pickup_points(
+        self,
+        cutoff_date: datetime,
+    ) -> list[PickupPointModel]:
+        return (
+            self.session.query(
+                PickupPointModel
+            )
+            .filter(
+                PickupPointModel.active.is_(True),
+                PickupPointModel.last_synced_at
+                < cutoff_date,
+            )
+            .all()
+        )
+
     def search_by_radius(
         self,
         latitude: float,
@@ -213,19 +230,10 @@ class PickupPointRepository:
             pickup_point.active
         )
 
-        
-        if (
-            hasattr(
-                pickup_point,
-                "last_synced_at",
-            )
-            and pickup_point.last_synced_at
-            is not None
-        ):
+        if pickup_point.last_synced_at is not None:
             existing.last_synced_at = (
                 pickup_point.last_synced_at
             )
-
 
     def delete(
         self,
