@@ -6,6 +6,9 @@ from universal_pudo.api.routers.carriers import (
 from universal_pudo.api.routers.pickup_points import (
     router as pickup_points_router,
 )
+from universal_pudo.api.routers.health import (
+    router as health_router,
+)
 
 app = FastAPI(
     title="Universal PUDO Engine",
@@ -18,6 +21,10 @@ app.include_router(
 
 app.include_router(
     pickup_points_router,
+)
+
+app.include_router(
+    health_router,
 )
 
 

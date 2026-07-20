@@ -32,11 +32,13 @@ universal-pudo-engine/
 │       │   │
 │       │   ├── routers/
 │       │   │   ├── carriers.py
-│       │   │   └── pickup_points.py
+│       │   │   ├── pickup_points.py
+│       │   │   └── health.py
 │       │   │
 │       │   ├── schemas/
 │       │   │   ├── carrier.py
-│       │   │   └── pickup_point.py
+│       │   │   ├── pickup_point.py
+│       │   │   └── provider_health.py
 │       │   │
 │       │   └── dependencies.py
 │       │
@@ -46,6 +48,7 @@ universal-pudo-engine/
 │       │       │
 │       │       ├── get_carrier.py
 │       │       ├── get_pickup_point.py
+│       │       ├── get_provider_health.py
 │       │       ├── list_carriers.py
 │       │       ├── list_pickup_points.py
 │       │       ├── search_pickup_points.py
@@ -64,7 +67,8 @@ universal-pudo-engine/
 │       │   ├── carrier_lifecycle.py
 │       │   ├── geolocation.py
 │       │   ├── pickup_point.py
-│       │   └── pickup_type.py
+│       │   ├── pickup_type.py
+│       │   └── provider_health.py
 │       │
 │       ├── infrastructure/
 │       │   │
@@ -123,6 +127,7 @@ universal-pudo-engine/
 │   │   │
 │   │   ├── routers/
 │   │   │   ├── test_carriers_router.py
+│   │   │   ├── test_health_router.py
 │   │   │   └── test_pickup_points_router.py
 │   │   │
 │   │   ├── schemas/
@@ -137,6 +142,7 @@ universal-pudo-engine/
 │   │       ├── test_deactivate_stale_pickup_points.py
 │   │       ├── test_get_carrier.py
 │   │       ├── test_get_pickup_point.py
+│   │       ├── test_get_provider_health.py
 │   │       ├── test_list_carriers.py
 │   │       ├── test_list_pickup_points.py
 │   │       ├── test_search_pickup_points.py
@@ -146,17 +152,25 @@ universal-pudo-engine/
 │   │       └── test_sync_carrier_pickup_points.py
 │   │
 │   ├── domain/
+│   │   ├── test_address.py
+│   │   ├── test_carrier.py
+│   │   ├── test_carrier_account.py
+│   │   ├── test_carrier_capability.py
+│   │   ├── test_carrier_lifecycle.py
+│   │   ├── test_geolocation.py
+│   │   ├── test_pickup_point.py
+│   │   ├── test_pickup_type.py
+│   │   └── test_provider_health.py
 │   │
 │   ├── infrastructure/
 │   │   │
-│   │   ├── database/
-│   │   │   ├── models/
-│   │   │   ├── repositories/
-│   │   │   ├── test_base.py
-│   │   │   ├── test_session.py
-│   │   │   └── test_settings.py
-│   │   │
-│   │   └── ...
+│   │   └── database/
+│   │       │
+│   │       ├── models/
+│   │       ├── repositories/
+│   │       ├── test_base.py
+│   │       ├── test_session.py
+│   │       └── test_settings.py
 │   │
 │   └── providers/
 │       │
@@ -165,6 +179,7 @@ universal-pudo-engine/
 │       ├── mock/
 │       └── mondial_relay/
 │
+├── .env
 ├── .env.example
 ├── alembic.ini
 ├── CHANGELOG.md

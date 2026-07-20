@@ -1,215 +1,234 @@
 # Universal PUDO Engine
 
-Universal PUDO Engine is a carrier-agnostic pickup point integration platform.
+Universal PUDO Engine is a carrier-agnostic pickup point platform designed to normalize pickup point data from multiple logistics carriers and expose a unified API for search, synchronization, caching and monitoring.
 
-The project provides a normalized model for pickup point (PUDO) data across multiple logistics carriers while preserving a stable application, database, and API architecture.
+The project demonstrates production-style integration architecture using:
 
-Its primary objective is to prove that heterogeneous carrier payloads can be transformed into a single canonical model without impacting the rest of the system.
-
----
-
-# Project Goals
-
-The project aims to:
-
-- Normalize carrier-specific pickup point payloads.
-- Create a reusable provider architecture.
-- Validate a carrier-agnostic domain model.
-- Support multiple carrier integrations without changing core application components.
-- Build a production-grade foundation for future carrier integrations.
+- FastAPI
+- PostgreSQL
+- SQLAlchemy
+- Alembic
+- Repository Pattern
+- Provider Pattern
+- Dependency Injection
+- Automated Testing
 
 ---
 
 # Current Status
 
-Latest verified test result:
+Version: Phase 9.1
 
-```text
-104 passed
-1 warning
-```
+Test Coverage:
 
-Current validation level:
+145 / 145 PASSING
 
-```text
-✅ Multi-carrier architecture validated
-✅ First live carrier integration validated
-✅ Real payload mapping validated
-```
+Supported Live Providers:
 
----
+✅ Colissimo
 
-# Architecture Overview
+✅ Mondial Relay
 
-High-level architecture:
+Project Status:
 
-```text
-Carrier Payload
-        ↓
-Provider Client
-        ↓
-Response Parser
-        ↓
-Dictionary Payload
-        ↓
-Provider Mapper
-        ↓
-PickupPointModel
-        ↓
-Use Cases
-        ↓
-API
-```
+✅ Active Development
 
-The architecture ensures that carrier-specific payload formats never reach the application layer.
+✅ Fully Tested
 
-Only normalized models leave the provider layer.
+✅ Documentation Synchronized
+
+✅ GitHub Synchronized
 
 ---
 
-# Supported Providers
+# Key Features
 
-## Mock Provider
+## Hybrid Search Engine
 
-Status:
+The platform uses a hybrid search strategy.
 
-```text
-Validated
-```
+Search Request
 
-Capabilities:
+↓
 
-- Static pickup point generation
-- Automated tests
+PostgreSQL Cache
 
----
+↓
 
-## Colissimo
+Cache Fresh?
 
-Status:
+├─ Yes → Return Cached Results
 
-```text
-Validated (simulated provider)
-```
+└─ No
 
-Capabilities:
+↓
 
-- Payload mapping
+Live Carrier API
+
+↓
+
+Synchronize PostgreSQL
+
+↓
+
+Return Results
+
+Benefits:
+
+- Reduced API traffic
+- Faster response times
+- Automatic cache refresh
+- Data persistence
 - Provider abstraction
-- Automated tests
 
 ---
 
-## Mondial Relay
+## Multi-Carrier Architecture
 
-Status:
+Each carrier is isolated behind a provider abstraction.
 
-```text
-Live SOAP Proof Of Concept Validated
+Current Providers:
+
+| Carrier       | Status  |
+| ------------- | ------- |
+| Colissimo     | ✅ Live |
+| Mondial Relay | ✅ Live |
+
+New carriers can be added without changing the API layer.
+
+---
+
+## Pickup Point Synchronization
+
+Implemented capabilities:
+
+✅ Synchronization Engine
+
+✅ Upsert Strategy
+
+✅ last_synced_at Tracking
+
+✅ Automatic Refresh
+
+✅ Stale Pickup Point Detection
+
+✅ Deactivation Strategy
+
+---
+
+## FastAPI API
+
+### Carriers
+
+```http
+GET /carriers/
 ```
 
-Capabilities:
+List all carriers.
 
-- SECURITY hash generation
-- SOAP envelope generation
-- SOAP response parsing
-- Real pickup point search
-- Real payload mapping
-- Automated tests
+```http
+GET /carriers/{carrier_id}
+```
 
-Validated live flow:
+Get carrier details.
 
-```text
-Mondial Relay SOAP
-↓
-HTTP
-↓
-XML Response
-↓
-ResponseParser
-↓
-dict
-↓
-MondialRelayMapper
-↓
-PickupPointModel
+---
+
+### Pickup Points
+
+```http
+GET /pickup-points/search
+```
+
+Hybrid search endpoint.
+
+Supported filters:
+
+- carrier_id
+- country_code
+- postal_code
+- city
+- pickup_type
+- active
+
+Example:
+
+```http
+GET /pickup-points/search?country_code=FR
 ```
 
 ---
 
-# Project Metrics
-
-Current automated test suite:
-
-```text
-104 passing tests
+```http
+GET /pickup-points/details/{pickup_point_id}
 ```
 
-Coverage includes:
-
-- Domain layer
-- SQLAlchemy models
-- Repository layer
-- Use cases
-- API routers
-- Mock provider
-- Colissimo provider
-- Colissimo mapper
-- Mondial Relay provider
-- Mondial Relay mapper
-- Mondial Relay security
-- Mondial Relay client
-- Mondial Relay response parser
-- Live payload mapping
+Retrieve pickup point details.
 
 ---
 
-# Live Integration Validation
-
-The first live carrier proof of concept has been successfully validated using Mondial Relay.
-
-Validated request:
-
-```text
-WSI4_PointRelais_Recherche
+```http
+GET /pickup-points/search-radius
 ```
 
-Validated components:
+Radius-based search.
 
-```text
-✅ Endpoint Connectivity
-✅ SECURITY Generation
-✅ SOAP Request Generation
-✅ HTTP Communication
-✅ XML Retrieval
-✅ Response Parsing
-✅ Payload Mapping
-✅ PickupPointModel Creation
+Example:
+
+```http
+GET /pickup-points/search-radius?latitude=48.8566&longitude=2.3522&radius_km=10
 ```
 
-Example live pickup point:
+---
+
+### Health Monitoring
+
+```http
+GET /health/providers
+```
+
+Provider Health API.
+
+Current response example:
+
+```json
+[
+  {
+    "provider_name": "colissimo",
+    "status": "UP",
+    "response_time_ms": null
+  },
+  {
+    "provider_name": "mondial-relay",
+    "status": "UP",
+    "response_time_ms": null
+  }
+]
+```
+
+---
+
+# Architecture
 
 ```text
-Carrier ID:
-
-mondial-relay
-
-Pickup Point ID:
-
-020243
-
-City:
-
-ISSY LES MOULINEAUX
-
-Postal Code:
-
-92130
-
-Coordinates:
-
-48.82619
-2.27988
+FastAPI
+│
+├── Carriers API
+│
+├── Pickup Points API
+│   │
+│   └── SearchHybridPickupPointsUseCase
+│       │
+│       ├── PostgreSQL Cache
+│       ├── Freshness Validation
+│       ├── Provider Fallback
+│       └── Synchronization
+│
+└── Health API
+    │
+    └── GetProviderHealthUseCase
+        │
+        └── ProviderFactory
 ```
 
 ---
@@ -217,305 +236,159 @@ Coordinates:
 # Project Structure
 
 ```text
-src/
-└── universal_pudo/
-    │
-    ├── api/
-    │
-    ├── application/
-    │
-    ├── domain/
-    │
-    ├── infrastructure/
-    │
-    ├── providers/
-    │   ├── base/
-    │   ├── mock/
-    │   ├── colissimo/
-    │   └── mondial_relay/
-    │
-    ├── scripts/
-    │   └── test_mondial_relay_live.py
-    │
-    └── main.py
+src/universal_pudo/
 
-tests/
 ├── api/
 ├── application/
 ├── domain/
 ├── infrastructure/
-├── data/
+├── providers/
+└── scripts/
+
+tests/
+
+├── api/
+├── application/
+├── domain/
+├── infrastructure/
 └── providers/
 ```
 
 ---
 
-# Provider Validation Matrix
+# Database
 
-| Provider      | Mapper | Provider | Live Connectivity | Tests |
-| ------------- | ------ | -------- | ----------------- | ----- |
-| Mock          | N/A    | ✅       | N/A               | ✅    |
-| Colissimo     | ✅     | ✅       | ❌                | ✅    |
-| Mondial Relay | ✅     | ✅       | ✅                | ✅    |
+Technology:
+
+- PostgreSQL
+- SQLAlchemy ORM
+- Alembic Migrations
+
+Key entities:
+
+- Carrier
+- CarrierAccount
+- PickupPoint
+
+Pickup Point freshness management is based on:
+
+```text
+last_synced_at
+```
+
+and configurable TTL cache validation.
 
 ---
 
-# Accepted Architecture Decisions
+# Provider Dependency Injection
 
-## ADR-0001
+Providers are created centrally through:
 
-Provider Mapping Strategy
-
-Decision:
-
-Carrier payloads must never be exposed outside provider implementations.
-
-Canonical model:
-
-```text
-PickupPointModel
+```python
+get_provider_factory()
 ```
 
-Flow:
+Current implementation:
 
 ```text
-Carrier Payload
-↓
-Provider Mapper
-↓
-PickupPointModel
-↓
-Use Cases
-↓
-API
+ProviderFactory
+├── ColissimoLiveProvider
+└── MondialRelayLiveProvider
 ```
+
+This architecture simplifies:
+
+- testing
+- provider replacement
+- future carrier onboarding
 
 ---
 
-# Development Workflow
+# Testing
 
-Recommended workflow:
+Current status:
 
 ```text
-Business Requirement
-↓
-Architecture
-↓
-ADR (if needed)
-↓
-Tests
-↓
-Implementation
-↓
-Pytest
-↓
-Documentation
-↓
-Git Commit
+145 / 145 PASSING
 ```
+
+Testing layers:
+
+✅ Domain Tests
+
+✅ Use Case Tests
+
+✅ Repository Tests
+
+✅ Provider Tests
+
+✅ FastAPI Endpoint Tests
+
+✅ Live Payload Validation
+
+✅ Synchronization Tests
+
+✅ Health Monitoring Tests
 
 ---
 
-# Current Roadmap
-
-## Phase 1 - Foundations
-
-Status:
-
-```text
-Completed
-```
+# Roadmap
 
 Completed:
 
-- Domain Layer
-- Database Layer
-- Repository Layer
-- FastAPI API
-- Automated Tests
+✅ Phase 1 - Foundations
+
+✅ Phase 2 - Provider Architecture
+
+✅ Phase 3 - Multi-Carrier Validation
+
+✅ Phase 4 - Live Carrier Validation
+
+✅ Phase 5 - Production Providers
+
+✅ Phase 6 - Provider Factory
+
+✅ Phase 7.1 - Synchronization Engine
+
+✅ Phase 7.3 - Upsert Strategy
+
+✅ Phase 7.4 - Freshness Tracking
+
+✅ Phase 7.5 - Stale Detection
+
+✅ Phase 8.1 - Hybrid Search Core
+
+✅ Phase 8.2 - Fresh Cache Strategy
+
+✅ Phase 8.3 - FastAPI Integration
+
+✅ Phase 9.1 - Provider Health API
+
+Next:
+
+⏳ Phase 9.2 - Response Time Monitoring
+
+⏳ Phase 9.3 - Real Connectivity Checks
+
+⏳ Phase 9.4 - Health History
+
+⏳ Phase 10 - Additional Carriers
 
 ---
 
-## Phase 2 - Provider Architecture
+# Engineering Principles
 
-Status:
-
-```text
-Completed
-```
-
-Completed:
-
-- PickupProvider Contract
-- Provider Mapping Strategy
-- ADR-0001
+- Domain-driven structure
+- Dependency Injection
+- Provider abstraction
+- Repository Pattern
+- Explicit synchronization strategy
+- Automated testing
+- Documentation synchronization
+- Incremental architecture evolution
 
 ---
 
-## Phase 3 - Multi-Carrier Validation
+# License
 
-Status:
-
-```text
-Completed
-```
-
-Validated:
-
-- Mock
-- Colissimo
-- Mondial Relay
-
-Result:
-
-```text
-PickupPointModel supports multiple carrier payload formats.
-```
-
----
-
-## Phase 4 - First Live Carrier Integration
-
-Status:
-
-```text
-Validated
-```
-
-Carrier:
-
-```text
-Mondial Relay
-```
-
-Completed:
-
-- SECURITY
-- SOAP Client Foundation
-- SOAP Envelope Builder
-- Response Parser
-- Live Request Validation
-- Live Payload Mapping
-
-Validated flow:
-
-```text
-Mondial Relay SOAP
-↓
-HTTP
-↓
-XML Response
-↓
-ResponseParser
-↓
-dict
-↓
-PickupPointModel
-```
-
----
-
-## Phase 5 - Production Ready Live Provider
-
-Status:
-
-```text
-Not Started
-```
-
-Planned work:
-
-- Environment-variable based credentials
-- XML fixtures
-- Retry strategy
-- Error mapping
-- Opening hours normalization
-- FastAPI integration
-- Use Case integration
-
----
-
-## Phase 6 - Additional Carriers
-
-Future candidates:
-
-- Colissimo Live
-- DPD
-- GLS
-- UPS
-- InPost
-- Chronopost
-
----
-
-# Current Known Limitations
-
-The live Mondial Relay integration is currently validated through a dedicated script and not yet exposed through application use cases or API endpoints.
-
-Outstanding work:
-
-- Store XML fixtures
-- Improve SOAP error handling
-- Normalize opening hours
-- Normalize pickup point types
-- Externalize credentials
-- Integrate live providers into application services
-
----
-
-# Project Health
-
-Architecture Status:
-
-```text
-Stable
-```
-
-Provider Architecture:
-
-```text
-Validated
-```
-
-Live Connectivity:
-
-```text
-Validated
-```
-
-Technical Debt:
-
-```text
-Low
-```
-
-Current Recommendation:
-
-```text
-Finalize documentation
-↓
-Commit milestone
-↓
-Start production-ready live provider phase
-```
-
-## Current Status
-
-✅ Mock Provider
-✅ Mondial Relay Live Provider
-✅ Colissimo Live Provider
-
-Supported integrations:
-
-| Carrier       | API Type  | Status  |
-| ------------- | --------- | ------- |
-| Mondial Relay | SOAP/XML  | ✅ Live |
-| Colissimo     | REST/JSON | ✅ Live |
-
-Project status:
-
-✅ Carrier abstraction layer
-✅ Canonical PickupPoint model
-✅ Live carrier integrations
-✅ Offline fixture testing
-✅ Provider pattern implementation
+Personal portfolio and learning project.

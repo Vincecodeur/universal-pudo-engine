@@ -2,28 +2,24 @@
 
 ### Added
 
-- get_provider_factory()
-- Colissimo dependency injection
-- Mondial Relay dependency injection
-- Hybrid Search exposed through FastAPI
-- Live provider access through API
+- ProviderHealth domain model
+- GetProviderHealthUseCase
+- ProviderHealthResponse schema
+- Health Router
+- GET /health/providers endpoint
 
 ### Changed
 
-- /pickup-points/search now uses SearchHybridPickupPointsUseCase
-- FastAPI now supports PostgreSQL-first search
-- FastAPI now supports automatic cache refresh
+- ProviderFactory is now exposed through health monitoring
 
 ### Tests
 
-- Full regression validation
-- 139 / 139 tests passing
+- Added health monitoring tests
+- Added endpoint validation tests
 
-### Git History
+### Metrics
 
-9bc79f9
-
-feat(search): add fresh cache strategy for hybrid search
+145 / 145 tests passing
 
 ## [0.6.0-dev] - 2026-07-19
 

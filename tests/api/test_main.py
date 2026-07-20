@@ -208,3 +208,19 @@ def test_search_pickup_points_by_radius() -> None:
     )
 
     assert len(body) >= 1
+    
+def test_provider_health_endpoint() -> None:
+    response = client.get(
+        "/health/providers"
+    )
+
+    assert response.status_code == 200
+
+    body = response.json()
+
+    assert isinstance(
+        body,
+        list,
+    )
+
+    assert len(body) >= 1

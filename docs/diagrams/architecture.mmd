@@ -4,7 +4,11 @@ flowchart TD
 
     SearchEndpoint["/pickup-points/search"]
 
+    HealthEndpoint["/health/providers"]
+
     HybridUseCase["SearchHybridPickupPointsUseCase"]
+
+    HealthUseCase["GetProviderHealthUseCase"]
 
     Repository["PickupPointRepository"]
 
@@ -16,34 +20,26 @@ flowchart TD
 
     MondialRelay["MondialRelayLiveProvider"]
 
-    Freshness["last_synced_at"]
-
     PostgreSQL["PostgreSQL"]
 
     SearchEndpoint --> HybridUseCase
 
     HybridUseCase --> Repository
 
-    Repository --> PostgreSQL
-
     Repository --> CacheCheck
 
-    CacheCheck -->|Fresh| PostgreSQL
+    Repository --> PostgreSQL
 
-    CacheCheck -->|Stale| ProviderFactory
-
-    Repository -->|Cache Miss| ProviderFactory
+    CacheCheck --> ProviderFactory
 
     ProviderFactory --> Colissimo
 
     ProviderFactory --> MondialRelay
 
-    Colissimo --> Freshness
+    HealthEndpoint --> HealthUseCase
 
-    MondialRelay --> Freshness
-
-    Freshness --> Repository
-
-    Repository --> PostgreSQL
+    HealthUseCase --> ProviderFactory
 
     API --> SearchEndpoint
+
+    API --> HealthEndpoint
