@@ -27,6 +27,17 @@ from universal_pudo.application.use_cases.search_pickup_points_by_radius import 
     SearchPickupPointsByRadiusUseCase,
 )
 
+from universal_pudo.api.dependencies import (
+    get_provider_factory,
+)
+
+from universal_pudo.application.use_cases.search_hybrid_pickup_points import (
+    SearchHybridPickupPointsUseCase,
+)
+
+from universal_pudo.providers.factory.provider_factory import (
+    ProviderFactory,
+)
 
 router = APIRouter(
     prefix="/pickup-points",
@@ -40,17 +51,24 @@ router = APIRouter(
 )
 def search_pickup_points(
     db: Annotated[Session, Depends(get_db)],
+    provider_factory: Annotated[
+        ProviderFactory,
+        Depends(get_provider_factory),
+    ],
     carrier_id: str | None = None,
     country_code: str | None = None,
     postal_code: str | None = None,
     city: str | None = None,
     pickup_type: str | None = None,
-    active: bool | None = None,
+    active: bool | None = True,
 ):
-    repository = PickupPointRepository(db)
+    repository = PickupPointRepository(
+        db
+    )
 
-    use_case = SearchPickupPointsUseCase(
-        repository,
+    use_case = SearchHybridPickupPointsUseCase(
+        repository=repository,
+        provider_factory=provider_factory,
     )
 
     return use_case.execute(
@@ -125,7 +143,7 @@ def search_pickup_points_by_radius(
     response_model=list[PickupPointResponse],
 )
 def list_pickup_points(
-    carrier_id: str,
+    carrier_id: str ,
     db: Annotated[Session, Depends(get_db)],
 ):
     repository = PickupPointRepository(db)

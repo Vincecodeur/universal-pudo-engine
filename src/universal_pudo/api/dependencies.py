@@ -6,8 +6,29 @@ from universal_pudo.infrastructure.database.settings import (
     DatabaseSettings,
 )
 
+from universal_pudo.providers.factory.provider_factory import (
+    ProviderFactory,
+)
+
+from universal_pudo.providers.colissimo.client import (
+    ColissimoClient,
+)
+
+from universal_pudo.providers.colissimo.colissimo_live_provider import (
+    ColissimoLiveProvider,
+)
+
+from universal_pudo.providers.mondial_relay.client import (
+    MondialRelayClient,
+)
+
+from universal_pudo.providers.mondial_relay.mondial_relay_live_provider import (
+    MondialRelayLiveProvider,
+)
+
 
 settings = DatabaseSettings()
+
 
 engine = create_engine(
     settings.database_url,
@@ -27,3 +48,29 @@ def get_db():
         yield session
     finally:
         session.close()
+
+
+def get_provider_factory() -> ProviderFactory:
+    colissimo_provider = (
+        ColissimoLiveProvider(
+            ColissimoClient(
+                api_key=settings.colissimo_api_key,
+            )
+        )
+    )
+
+    mondial_relay_provider = (
+        MondialRelayLiveProvider(
+            MondialRelayClient(
+                enseigne=settings.mondial_relay_enseigne,
+                private_key=settings.mondial_relay_private_key,
+            )
+        )
+    )
+
+    return ProviderFactory(
+        {
+            "colissimo": colissimo_provider,
+            "mondial-relay": mondial_relay_provider,
+        }
+    )

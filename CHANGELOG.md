@@ -1,48 +1,29 @@
-# Changelog
-
 ## [Unreleased]
 
 ### Added
 
-- SearchHybridPickupPointsUseCase
-- Hybrid Search architecture
-- PostgreSQL-first search strategy
-- Automatic live provider fallback
-- Automatic cache population
-- hybrid_search_cache_ttl_days
-- is_cache_fresh()
-- Cache freshness validation
-- Automatic refresh when cache becomes stale
+- get_provider_factory()
+- Colissimo dependency injection
+- Mondial Relay dependency injection
+- Hybrid Search exposed through FastAPI
+- Live provider access through API
 
 ### Changed
 
-- Search flow now supports hybrid execution
-- Cache is no longer blindly trusted
-- Search now refreshes stale data automatically
+- /pickup-points/search now uses SearchHybridPickupPointsUseCase
+- FastAPI now supports PostgreSQL-first search
+- FastAPI now supports automatic cache refresh
 
 ### Tests
 
-- Added Hybrid Search tests
-- Added cache freshness tests
-- Added stale cache refresh tests
-
-### Current Status
-
-139 / 139 tests passing
+- Full regression validation
+- 139 / 139 tests passing
 
 ### Git History
 
-89579e1
+9bc79f9
 
-feat(sync): add freshness tracking and synchronization metadata
-
-ef76bc5
-
-feat(sync): add stale pickup point detection
-
-17af6f3
-
-docs: update roadmap after phase 7.5
+feat(search): add fresh cache strategy for hybrid search
 
 ## [0.6.0-dev] - 2026-07-19
 

@@ -25,7 +25,7 @@ class SearchHybridPickupPointsUseCase:
     def execute(
         self,
         *,
-        carrier_id: str,
+        carrier_id: str| None = None,
         country_code: str | None = None,
         postal_code: str | None = None,
         city: str | None = None,

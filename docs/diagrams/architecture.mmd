@@ -2,7 +2,7 @@ flowchart TD
 
     API["FastAPI"]
 
-    SearchRequest["Search Request"]
+    SearchEndpoint["/pickup-points/search"]
 
     HybridUseCase["SearchHybridPickupPointsUseCase"]
 
@@ -20,11 +20,7 @@ flowchart TD
 
     PostgreSQL["PostgreSQL"]
 
-    StaleUseCase["DeactivateStalePickupPointsUseCase"]
-
-    API --> SearchRequest
-
-    SearchRequest --> HybridUseCase
+    SearchEndpoint --> HybridUseCase
 
     HybridUseCase --> Repository
 
@@ -50,4 +46,4 @@ flowchart TD
 
     Repository --> PostgreSQL
 
-    PostgreSQL --> StaleUseCase
+    API --> SearchEndpoint

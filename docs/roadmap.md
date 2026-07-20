@@ -93,7 +93,7 @@ Delivered:
 
 # Phase 8 - Hybrid Search
 
-Status: IN PROGRESS
+Status: COMPLETED
 
 ## Phase 8.1 - Hybrid Search Core
 
@@ -107,6 +107,8 @@ Delivered:
 - Automatic cache population
 - Automatic synchronization after live search
 
+---
+
 ## Phase 8.2 - Fresh Cache Strategy
 
 ✅ COMPLETED
@@ -119,18 +121,36 @@ Delivered:
 - Automatic refresh on stale cache
 - Cache TTL configuration
 
+---
+
+## Phase 8.3 - FastAPI Integration
+
+✅ COMPLETED
+
+Delivered:
+
+- Provider dependency injection
+- get_provider_factory()
+- ColissimoLiveProvider integration
+- MondialRelayLiveProvider integration
+- SearchHybridPickupPointsUseCase exposed through FastAPI
+- Live carrier search accessible via API
+- Hybrid Search enabled on /pickup-points/search
+
 Current Search Flow:
 
-Search Request
+API Request
 ↓
-PostgreSQL Search
+SearchHybridPickupPointsUseCase
+↓
+Repository Search
 ↓
 Results Found?
 ├─ No
 │ ↓
-│ Live Provider
+│ ProviderFactory
 │ ↓
-│ last_synced_at
+│ Live Provider
 │ ↓
 │ upsert()
 │ ↓
@@ -140,41 +160,17 @@ Results Found?
 ↓
 is_cache_fresh()
 ↓
-Fresh?
+Fresh ?
 ├─ Yes → Return Cache
 └─ No
 ↓
 Live Provider
 ↓
+Refresh
+↓
 upsert()
 ↓
 Return
-
----
-
-# Phase 8.3 - FastAPI Integration
-
-Status: NEXT PHASE
-
-Objectives:
-
-- Replace SearchPickupPointsUseCase
-- Use SearchHybridPickupPointsUseCase in API
-- Expose Hybrid Search through FastAPI
-
----
-
-# Phase 8.4 - Search Metrics
-
-Status: Planned
-
-Features:
-
-- cache_hit
-- cache_miss
-- live_refresh
-
----
 
 # Phase 9 - Provider Health
 

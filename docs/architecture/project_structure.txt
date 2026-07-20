@@ -5,10 +5,16 @@ universal-pudo-engine/
 ├── docs/
 │   │
 │   ├── architecture/
-│   │   └── project_status.md
+│   │   ├── project_status.md
+│   │   └── project_structure.txt
 │   │
 │   ├── diagrams/
 │   │   └── architecture.mmd
+│   │
+│   ├── integrations/
+│   │   ├── colissimo_analysis.md
+│   │   ├── colissimo_provider_design.md
+│   │   └── provider_gap_analysis.md
 │   │
 │   ├── database-design.md
 │   └── roadmap.md
@@ -50,6 +56,15 @@ universal-pudo-engine/
 │       │       └── deactivate_stale_pickup_points.py
 │       │
 │       ├── domain/
+│       │   │
+│       │   ├── address.py
+│       │   ├── carrier.py
+│       │   ├── carrier_account.py
+│       │   ├── carrier_capability.py
+│       │   ├── carrier_lifecycle.py
+│       │   ├── geolocation.py
+│       │   ├── pickup_point.py
+│       │   └── pickup_type.py
 │       │
 │       ├── infrastructure/
 │       │   │
@@ -78,31 +93,81 @@ universal-pudo-engine/
 │       │   │   └── provider_factory.py
 │       │   │
 │       │   ├── colissimo/
+│       │   │   ├── client.py
+│       │   │   ├── mapper.py
+│       │   │   ├── colissimo_live_provider.py
+│       │   │   └── colissimo_pickup_provider.py
 │       │   │
 │       │   ├── mondial_relay/
+│       │   │   ├── client.py
+│       │   │   ├── mapper.py
+│       │   │   ├── response_parser.py
+│       │   │   ├── security.py
+│       │   │   ├── mondial_relay_live_provider.py
+│       │   │   └── mondial_relay_provider.py
 │       │   │
 │       │   ├── mock/
+│       │   │   └── mock_pickup_provider.py
 │       │   │
 │       │   └── exceptions.py
+│       │
+│       ├── scripts/
+│       │   ├── test_colissimo_live.py
+│       │   └── test_mondial_relay_live.py
 │       │
 │       └── main.py
 │
 ├── tests/
 │   │
 │   ├── api/
+│   │   │
+│   │   ├── routers/
+│   │   │   ├── test_carriers_router.py
+│   │   │   └── test_pickup_points_router.py
+│   │   │
+│   │   ├── schemas/
+│   │   │   ├── test_carrier_schema.py
+│   │   │   └── test_pickup_point_schema.py
+│   │   │
+│   │   └── test_main.py
 │   │
 │   ├── application/
+│   │   │
 │   │   └── use_cases/
+│   │       ├── test_deactivate_stale_pickup_points.py
+│   │       ├── test_get_carrier.py
+│   │       ├── test_get_pickup_point.py
+│   │       ├── test_list_carriers.py
+│   │       ├── test_list_pickup_points.py
+│   │       ├── test_search_pickup_points.py
+│   │       ├── test_search_pickup_points_by_radius.py
+│   │       ├── test_search_live_pickup_points.py
 │   │       ├── test_search_hybrid_pickup_points.py
-│   │       └── test_deactivate_stale_pickup_points.py
+│   │       └── test_sync_carrier_pickup_points.py
+│   │
+│   ├── domain/
 │   │
 │   ├── infrastructure/
+│   │   │
+│   │   ├── database/
+│   │   │   ├── models/
+│   │   │   ├── repositories/
+│   │   │   ├── test_base.py
+│   │   │   ├── test_session.py
+│   │   │   └── test_settings.py
+│   │   │
+│   │   └── ...
 │   │
-│   ├── providers/
-│   │
-│   └── domain/
+│   └── providers/
+│       │
+│       ├── colissimo/
+│       ├── factory/
+│       ├── mock/
+│       └── mondial_relay/
 │
+├── .env.example
+├── alembic.ini
 ├── CHANGELOG.md
-├── project_structure.txt
+├── README.md
 ├── pyproject.toml
-└── README.md
+└── project_structure.txt
