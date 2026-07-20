@@ -4,44 +4,39 @@
 
 ### Added
 
-- SyncCarrierPickupPointsUseCase
-- PickupPointRepository.find_by_carrier_pickup_id()
-- PickupPointRepository.upsert()
-- Pickup point freshness tracking
 - last_synced_at field
-- Alembic migration for freshness tracking
+- freshness tracking
+- Alembic migration for synchronization metadata
+- find_stale_pickup_points()
+- DeactivateStalePickupPointsUseCase
+- stale pickup point detection
 
 ### Changed
 
-- Synchronization now uses upsert strategy
-- Synchronization is repeatable
-- Duplicate pickup points are prevented
-- Sync engine updates freshness metadata
+- Synchronization now tracks last synchronization date
+- Synchronization metadata is persisted
+- Pickup points can now be identified as stale
+- Automatic stale pickup point deactivation strategy introduced
 
 ### Tests
 
-- Added repository lookup tests
-- Added repository upsert tests
-- Added synchronization freshness tests
+- Added freshness tracking tests
+- Added stale pickup point repository tests
+- Added stale pickup point use case tests
 
 ### Current Status
 
-128 / 128 tests passing
+132 / 132 tests passing
 
-### Added
+### Git History
 
-- ColissimoClient
-- ColissimoLiveProvider
-- MondialRelayLiveProvider
-- Real Colissimo JSON fixture
-- Live provider tests
-- Provider package initialization
+89579e1
 
-### Testing
+feat(sync): add freshness tracking and synchronization metadata
 
-- 117 automated tests passing
-- Mondial Relay live validation
-- Colissimo live validation
+ef76bc5
+
+feat(sync): add stale pickup point detection
 
 ## [0.6.0-dev] - 2026-07-19
 

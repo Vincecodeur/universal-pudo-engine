@@ -24,11 +24,13 @@ PHASE 7.3 ✅ COMPLETED
 
 PHASE 7.4 ✅ COMPLETED
 
+PHASE 7.5 ✅ COMPLETED
+
 ---
 
 # Current Test Count
 
-128 / 128 PASSING
+132 / 132 PASSING
 
 ---
 
@@ -42,17 +44,15 @@ PHASE 7.4 ✅ COMPLETED
 
 ✅ Upsert Strategy
 
-✅ Carrier Business Key
-
-(carrier_id, carrier_pickup_id)
-
 ✅ last_synced_at
-
-✅ Alembic Migration
 
 ✅ Data Freshness V1
 
-✅ 128 Automated Tests
+✅ Stale Pickup Point Detection
+
+✅ DeactivateStalePickupPointsUseCase
+
+✅ 132 Automated Tests
 
 ---
 
@@ -69,6 +69,10 @@ Implemented
 ✅ Track synchronization timestamp
 
 ✅ Persist data into PostgreSQL
+
+✅ Detect stale pickup points
+
+✅ Deactivate stale pickup points
 
 Business Key
 
@@ -110,17 +114,17 @@ Synchronization Engine
 
 ✅ Stable
 
-Data Freshness
+Freshness Engine
 
-✅ Initial Implementation Complete
+✅ Stable
+
+Stale Detection Engine
+
+✅ Stable
 
 ---
 
 # Planned
-
-Phase 7.5
-
-- Stale Pickup Point Detection
 
 Phase 8
 
@@ -140,7 +144,7 @@ Phase 10
 
 Passing Tests:
 
-128
+132
 
 Live Carriers:
 
@@ -152,13 +156,17 @@ SOAP/XML ✅
 
 REST/JSON ✅
 
-Synchronization Engine:
+Synchronization:
 
 ✅ Operational
 
 Freshness Tracking:
 
-✅ last_synced_at
+✅ Operational
+
+Stale Detection:
+
+✅ Operational
 
 Overall Status:
 
@@ -168,5 +176,4 @@ Overall Status:
 
 ✅ Documented
 
-✅ Ready for Phase 7.5
-`
+✅ Ready For Phase 8

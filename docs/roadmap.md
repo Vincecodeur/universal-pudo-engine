@@ -16,7 +16,7 @@ Universal PUDO Engine is a carrier-agnostic pickup point platform designed to:
 
 Current Test Count:
 
-128 / 128 PASSING
+132 / 132 PASSING
 
 Validated Integrations:
 
@@ -30,29 +30,11 @@ Validated Integrations:
 
 Status: ✅ COMPLETED
 
-Delivered:
-
-- FastAPI setup
-- SQLAlchemy setup
-- PostgreSQL integration
-- Alembic migrations
-- Domain layer
-- Repository layer
-- API layer
-- Testing infrastructure
-
 ---
 
 # Phase 2 - Provider Architecture
 
 Status: ✅ COMPLETED
-
-Delivered:
-
-- PickupProvider contract
-- Mock provider
-- Provider abstraction layer
-- Mapping strategy
 
 ---
 
@@ -60,25 +42,11 @@ Delivered:
 
 Status: ✅ COMPLETED
 
-Delivered:
-
-- Canonical PickupPointModel
-- Mondial Relay provider
-- Colissimo provider
-- Multi-provider validation
-
 ---
 
 # Phase 4 - Live Carrier Validation
 
 Status: ✅ COMPLETED
-
-Delivered:
-
-- Mondial Relay live SOAP validation
-- Colissimo live REST validation
-- Real fixture generation
-- Payload validation
 
 ---
 
@@ -86,32 +54,11 @@ Delivered:
 
 Status: ✅ COMPLETED
 
-Delivered:
-
-- MondialRelayLiveProvider
-- ColissimoLiveProvider
-- Provider tests
-- Client abstraction
-
 ---
 
 # Phase 6 - Provider Factory
 
 Status: ✅ COMPLETED
-
-Delivered:
-
-- ProviderFactory
-- ProviderNotFoundError
-- SearchLivePickupPointsUseCase
-
-Architecture:
-
-carrier_id
-↓
-ProviderFactory
-↓
-Live Provider
 
 ---
 
@@ -121,60 +68,55 @@ Status: ✅ COMPLETED
 
 ## Phase 7.1 - Sync Engine
 
+✅ COMPLETED
+
 Delivered:
 
-✅ SyncCarrierPickupPointsUseCase
-
-Features:
-
-- Provider resolution through ProviderFactory
-- Live carrier synchronization
-- Pickup point persistence
-- Synchronization statistics
+- SyncCarrierPickupPointsUseCase
+- ProviderFactory integration
+- Live synchronization
+- PostgreSQL persistence
 
 ---
 
 ## Phase 7.3 - Upsert Strategy
 
+✅ COMPLETED
+
 Delivered:
 
-✅ find_by_carrier_pickup_id()
-
-✅ upsert()
+- find_by_carrier_pickup_id()
+- upsert()
 
 Business Key:
 
 (carrier_id, carrier_pickup_id)
 
-Benefits:
-
-- Repeatable synchronization
-- Duplicate prevention
-- Existing pickup point updates
-- Stable synchronization behavior
-
 ---
 
 ## Phase 7.4 - Data Freshness V1
 
+✅ COMPLETED
+
 Delivered:
 
-✅ last_synced_at
+- last_synced_at
+- Alembic migration
+- freshness tracking
+- synchronization metadata
 
-✅ Alembic migration
+---
 
-✅ Model update
+## Phase 7.5 - Stale Pickup Point Detection
 
-✅ Repository support
+✅ COMPLETED
 
-✅ Sync engine integration
+Delivered:
 
-Benefits:
-
-- Synchronization traceability
-- Future stale pickup point detection
-- Future cache strategy support
-- Foundation for hybrid search
+- find_stale_pickup_points()
+- DeactivateStalePickupPointsUseCase
+- stale pickup point detection
+- automatic deactivation strategy
 
 Current Synchronization Flow:
 
@@ -184,43 +126,49 @@ Provider
 ↓
 SyncCarrierPickupPointsUseCase
 ↓
-last_synced_at update
+last_synced_at
 ↓
 Repository.upsert()
 ↓
 PostgreSQL
 
----
+Stale Detection:
 
-# Phase 7.5 - Stale Pickup Point Detection
-
-Status: Planned
-
-Objectives:
-
-- Detect stale pickup points
-- Identify outdated synchronized data
-- Prepare automatic cleanup strategy
+PostgreSQL
+↓
+find_stale_pickup_points()
+↓
+DeactivateStalePickupPointsUseCase
+↓
+active = False
 
 ---
 
 # Phase 8 - Hybrid Search
 
-Status: Planned
+Status: NEXT PHASE
+
+Objectives:
+
+- PostgreSQL-first search
+- Live provider fallback
+- Automatic cache population
+- Search latency reduction
+- Foundation for cache refresh strategy
 
 Architecture:
 
-PostgreSQL First
+PostgreSQL
 ↓
-Fallback Live Search
+Results Found?
+├─ Yes → Return
+└─ No
 ↓
-Synchronization Refresh
-
-Goals:
-
-- Offline-first search
-- Reduced provider calls
-- Faster response times
+Live Provider
+↓
+Synchronization
+↓
+Return
 
 ---
 
@@ -256,6 +204,7 @@ Candidates:
 - Live carrier integrations
 - Repeatable synchronization
 - Data freshness tracking
+- Stale pickup point detection
 - Hybrid search capability
 - Stable API
 - Fully documented architecture

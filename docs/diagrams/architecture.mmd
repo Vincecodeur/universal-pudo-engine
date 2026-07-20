@@ -16,6 +16,8 @@ flowchart TD
 
     SyncUseCase["SyncCarrierPickupPointsUseCase"]
 
+    StaleUseCase["DeactivateStalePickupPointsUseCase"]
+
     PickupPointModel["PickupPointModel"]
 
     Freshness["last_synced_at"]
@@ -28,7 +30,9 @@ flowchart TD
 
     SearchEndpoint["/pickup-points/search"]
 
-    GetEndpoint["/pickup-points/{id}"]
+    SearchRadiusEndpoint["/pickup-points/search-radius"]
+
+    DetailsEndpoint["/pickup-points/details/{id}"]
 
     Colissimo --> ColissimoProvider
 
@@ -44,16 +48,20 @@ flowchart TD
 
     SearchLiveUseCase --> PickupPointModel
 
-    SyncUseCase --> PickupPointModel
-
-    PickupPointModel --> Freshness
+    SyncUseCase --> Freshness
 
     Freshness --> Repository
 
     Repository --> PostgreSQL
 
+    PostgreSQL --> StaleUseCase
+
+    StaleUseCase --> PickupPointModel
+
     PostgreSQL --> API
 
     API --> SearchEndpoint
 
-    API --> GetEndpoint
+    API --> SearchRadiusEndpoint
+
+    API --> DetailsEndpoint
