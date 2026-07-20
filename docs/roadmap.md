@@ -2,32 +2,51 @@
 
 ## Vision
 
-Universal PUDO Engine is a carrier-agnostic pickup point engine designed to normalize multiple carrier APIs into a single canonical model.
+Universal PUDO Engine is a carrier-agnostic pickup point platform designed to:
 
-The project demonstrates:
+- Normalize heterogeneous carrier APIs
+- Provide a canonical pickup point model
+- Synchronize carrier data into a local database
+- Support hybrid search strategies
+- Demonstrate integration architecture best practices
 
-- Hexagonal Architecture
-- Domain Driven Design
-- Multi-carrier integrations
-- SOAP/XML integration
-- REST/JSON integration
-- Canonical data modeling
-- Test-driven development
-- Provider abstraction patterns
+Target Architecture:
+
+Carrier APIs
+↓
+Providers
+↓
+Canonical Models
+↓
+Synchronization Engine
+↓
+PostgreSQL
+↓
+Search API
 
 ---
 
 # Current Status
 
-## Tests
+Current Test Count:
 
-✅ 117 automated tests passing
+122 passing tests
 
-## Live Carriers
+Validated Integrations:
 
 ✅ Mondial Relay (SOAP/XML)
 
 ✅ Colissimo (REST/JSON)
+
+Validated Components:
+
+✅ ProviderFactory
+
+✅ SearchLivePickupPointsUseCase
+
+✅ MondialRelayLiveProvider
+
+✅ ColissimoLiveProvider
 
 ---
 
@@ -35,22 +54,16 @@ The project demonstrates:
 
 Status: ✅ Completed
 
-Goals:
+Delivered:
 
-- Repository setup
-- Python project structure
 - FastAPI setup
 - SQLAlchemy setup
-- Alembic setup
 - PostgreSQL integration
-- Test infrastructure
-
-Deliverables:
-
-- FastAPI application
-- Database layer
+- Alembic migrations
 - Domain layer
-- Testing framework
+- Repository layer
+- API layer
+- Testing infrastructure
 
 ---
 
@@ -58,17 +71,12 @@ Deliverables:
 
 Status: ✅ Completed
 
-Goals:
+Delivered:
 
-- Create canonical PickupProvider contract
-- Create provider abstraction layer
-- Create mock provider
-
-Deliverables:
-
-- PickupProvider
-- MockPickupProvider
-- Provider test suite
+- PickupProvider contract
+- Mock provider
+- Provider abstraction layer
+- Mapping strategy
 
 ---
 
@@ -76,16 +84,11 @@ Deliverables:
 
 Status: ✅ Completed
 
-Goals:
+Delivered:
 
-- Validate carrier abstraction
-- Introduce real carrier-specific models
-
-Deliverables:
-
-- Carrier support structure
-- Mapper layer
-- Canonical PickupPointModel
+- Mondial Relay provider
+- Colissimo provider
+- Canonical PickupPointModel validation
 
 ---
 
@@ -93,26 +96,20 @@ Deliverables:
 
 Status: ✅ Completed
 
-Goals:
+Delivered:
 
-- Validate real carrier APIs
-- Validate payload mapping
-- Create reusable fixtures
+Mondial Relay:
 
-Deliverables:
+- Live SOAP integration
+- XML validation
+- Response parser
+- Fixture tests
 
-## Mondial Relay
+Colissimo:
 
-- SOAP integration
-- XML fixtures
-- ResponseParser
-- Mapper
-
-## Colissimo
-
-- REST integration
-- JSON fixtures
-- Mapper
+- Live REST integration
+- JSON validation
+- Fixture tests
 
 ---
 
@@ -120,209 +117,169 @@ Deliverables:
 
 Status: ✅ Completed
 
-Goals:
+Delivered:
 
-- Integrate live carrier APIs into Provider Layer
-
-Deliverables:
-
-## Mondial Relay
-
-- MondialRelayClient
 - MondialRelayLiveProvider
-
-## Colissimo
-
-- ColissimoClient
 - ColissimoLiveProvider
-
-Results:
-
-- Provider abstraction validated
-- Two live provider implementations
-- 117 passing tests
+- Client layer
+- Mapping layer
+- Provider tests
 
 ---
 
 # Phase 6 - Provider Factory
 
-Status: 🔄 Planned
+Status: ✅ Completed
 
-Goals:
-
-- Centralize provider resolution
-- Remove manual provider selection
-- Prepare automatic carrier routing
-
-Deliverables:
+Delivered:
 
 - ProviderFactory
 - ProviderNotFoundError
-- Provider Registry
-- Provider Factory Test Suite
+- SearchLivePickupPointsUseCase
+- Factory tests
 
-Architecture Target:
+Architecture:
 
 carrier_id
 ↓
 ProviderFactory
 ↓
-Provider
-↓
+Live Provider
+
+---
+
+# Phase 7 - Carrier Synchronization Engine
+
+Status: 🔄 In Progress
+
+Objective:
+
+Synchronize carrier pickup points into PostgreSQL.
+
+Target Flow:
+
 Carrier API
+↓
+Live Provider
+↓
+PickupPointModel
+↓
+PickupPointRepository
+↓
+PostgreSQL
+
+Phase 7.1
+
+- SyncCarrierPickupPointsUseCase
+
+Phase 7.2
+
+- Synchronization strategies
+- Bulk save support
+
+Phase 7.3
+
+- Data freshness tracking
 
 ---
 
-# Phase 7 - Dependency Injection & Configuration
+# Phase 8 - Hybrid Search Strategy
 
-Status: 🟡 Planned
+Status: Planned
+
+Architecture:
+
+PostgreSQL First
+↓
+Fallback Live Search
+↓
+Cache Refresh
 
 Goals:
 
-- Centralized provider configuration
-- Automatic client instantiation
-- Remove hardcoded dependencies
-
-Deliverables:
-
-- Provider configuration layer
-- Settings integration
-- Dependency injection
+- Offline-first search
+- Reduced provider calls
+- Faster response times
 
 ---
 
-# Phase 8 - Provider Registry
+# Phase 9 - Data Freshness
 
-Status: 🟡 Planned
+Planned
 
-Goals:
+Fields under consideration:
 
-- Simplify new carrier onboarding
-
-Deliverables:
-
-- Registry pattern
-- Dynamic carrier registration
-- Extensible architecture
+- last_sync_at
+- last_seen_at
+- source
 
 ---
 
-# Phase 9 - Provider Health Monitoring
+# Phase 10 - Capability Normalization
 
-Status: 🟡 Planned
+Planned
 
-Goals:
+Future canonical concepts:
 
-- Provider availability checks
-- Latency monitoring
-- Health reporting
-
-Deliverables:
-
-- ProviderHealth model
-- Health endpoints
-- Monitoring metrics
-
----
-
-# Phase 10 - Advanced Canonical Model
-
-Status: 🟡 Planned
-
-Goals:
-
-- Support advanced carrier capabilities
-
-Deliverables:
-
-- CarrierCapability
-- CarrierService
 - CarrierConstraint
-- CarrierOptions
+- CarrierService
+- CarrierCapability
 
 ---
 
-# Phase 11 - Performance & Caching
+# Phase 11 - Provider Health
 
-Status: 🟡 Planned
+Planned
 
-Goals:
+Features:
 
-- Reduce carrier API calls
-- Improve response times
-
-Deliverables:
-
-- Cache layer
-- TTL strategy
-- Cache invalidation
+- Health checks
+- Availability monitoring
+- Response time tracking
 
 ---
 
-# Phase 12 - Production API Hardening
+# Phase 12 - Additional Carriers
 
-Status: 🟡 Planned
+Planned
 
-Goals:
-
-- Production readiness
-
-Deliverables:
-
-- Enhanced OpenAPI
-- Structured logging
-- Correlation IDs
-- Rate limiting
-
----
-
-# Phase 13 - Additional Carriers
-
-Status: 🟡 Planned
-
-Potential targets:
+Candidates:
 
 - DPD
 - Chronopost
-- UPS
 - GLS
+- UPS
 - InPost
-- Evri
-- Yodel
 
 ---
 
-# Phase 14 - Observability
+# Phase 13 - Observability
 
-Status: 🟡 Planned
+Planned
 
-Goals:
-
-- Operational visibility
-
-Deliverables:
+Features:
 
 - Metrics
+- Structured logging
 - Tracing
-- Dashboard integration
 
 ---
 
-# Phase 15 - Release 1.0
+# Phase 14 - Release 1.0
 
-Status: 🟡 Planned
+Planned
 
 Deliverables:
 
 - Final documentation
-- Architecture diagrams
 - ADR review
-- Release notes
-- GitHub showcase quality
+- Architecture diagrams
+- Production-ready repository
 
 Success Criteria:
 
-- Stable architecture
 - Multiple live carriers
+- Hybrid search architecture
+- Synchronization engine
+- Stable API
 - Fully documented
-- Production-grade design

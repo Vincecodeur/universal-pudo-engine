@@ -296,3 +296,29 @@ flowchart LR
     style P5 fill:#90EE90
     style P6 fill:#FFD580
 ```
+
+flowchart TD
+
+    CarrierAPI["Carrier API"]
+
+    ProviderFactory["ProviderFactory"]
+
+    LiveProvider["Live Provider"]
+
+    SyncUseCase["SyncCarrierPickupPointsUseCase"]
+
+    Repository["PickupPointRepository"]
+
+    PostgreSQL["PostgreSQL"]
+
+    CarrierAPI --> LiveProvider
+
+    ProviderFactory --> LiveProvider
+
+    SyncUseCase --> ProviderFactory
+
+    SyncUseCase --> Repository
+
+    LiveProvider --> SyncUseCase
+
+    Repository --> PostgreSQL

@@ -280,3 +280,45 @@ Purpose:
 - Extensible carrier architecture
 - Canonical data model
 - Production-ready design
+
+# Synchronization Architecture (Planned)
+
+The project uses a hybrid strategy.
+
+Search Strategy:
+
+PostgreSQL
+↓
+Primary Source
+
+Carrier APIs
+↓
+Fallback Source
+
+Future Synchronization Flow:
+
+Carrier API
+↓
+ProviderFactory
+↓
+Live Provider
+↓
+PickupPointModel
+↓
+PickupPointRepository
+↓
+PostgreSQL
+
+Components:
+
+- SyncCarrierPickupPointsUseCase
+- ProviderFactory
+- PickupPointRepository
+- Live Providers
+
+Benefits:
+
+- Faster searches
+- Reduced carrier API usage
+- Offline search capability
+- Better scalability
