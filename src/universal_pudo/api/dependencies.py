@@ -2,37 +2,56 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 
+
 from universal_pudo.infrastructure.database.settings import (
     DatabaseSettings,
 )
+
 
 from universal_pudo.providers.factory.provider_factory import (
     ProviderFactory,
 )
 
+
 from universal_pudo.providers.colissimo.client import (
     ColissimoClient,
 )
+
 
 from universal_pudo.providers.colissimo.colissimo_live_provider import (
     ColissimoLiveProvider,
 )
 
+
 from universal_pudo.providers.mondial_relay.client import (
     MondialRelayClient,
 )
+
 
 from universal_pudo.providers.mondial_relay.mondial_relay_live_provider import (
     MondialRelayLiveProvider,
 )
 
 
+from universal_pudo.providers.chronopost.client import (
+    ChronopostClient,
+)
+
+from universal_pudo.providers.chronopost.chronopost_live_provider import (
+    ChronopostLiveProvider,
+)
+
+
+
 settings = DatabaseSettings()
+
+
 
 
 engine = create_engine(
     settings.database_url,
 )
+
 
 SessionLocal = sessionmaker(
     bind=engine,
@@ -41,13 +60,18 @@ SessionLocal = sessionmaker(
 )
 
 
+
+
 def get_db():
     session: Session = SessionLocal()
+
 
     try:
         yield session
     finally:
         session.close()
+
+
 
 
 def get_provider_factory() -> ProviderFactory:
@@ -59,6 +83,7 @@ def get_provider_factory() -> ProviderFactory:
         )
     )
 
+
     mondial_relay_provider = (
         MondialRelayLiveProvider(
             MondialRelayClient(
@@ -67,10 +92,22 @@ def get_provider_factory() -> ProviderFactory:
             )
         )
     )
+    
+    chronopost_provider = (
+        ChronopostLiveProvider(
+            ChronopostClient(
+                account_number=settings.chronopost_account_number,
+                password=settings.chronopost_password,
+            )
+        )
+    )
+
+
 
     return ProviderFactory(
         {
             "colissimo": colissimo_provider,
             "mondial-relay": mondial_relay_provider,
+            "chronopost": chronopost_provider,
         }
     )

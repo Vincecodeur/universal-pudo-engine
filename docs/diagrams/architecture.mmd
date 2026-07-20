@@ -1,45 +1,25 @@
 flowchart TD
 
-    API["FastAPI"]
+API[FastAPI]
 
-    SearchEndpoint["/pickup-points/search"]
+API --> UC[Use Cases]
 
-    HealthEndpoint["/health/providers"]
+UC --> PF[ProviderFactory]
 
-    HybridUseCase["SearchHybridPickupPointsUseCase"]
+PF --> C[ColissimoLiveProvider]
+PF --> M[MondialRelayLiveProvider]
+PF --> CH[ChronopostLiveProvider]
 
-    HealthUseCase["GetProviderHealthUseCase"]
+C --> CAPI[Colissimo REST API]
+M --> MAPI[Mondial Relay SOAP]
+CH --> CHAPI[Chronopost XML API]
 
-    Repository["PickupPointRepository"]
+C --> CM[Mapper]
+M --> MM[ResponseParser + Mapper]
+CH --> CHP[ResponseParser + Mapper]
 
-    CacheCheck["is_cache_fresh()"]
+CM --> PP[PickupPointModel]
+MM --> PP
+CHP --> PP
 
-    ProviderFactory["ProviderFactory"]
-
-    Colissimo["ColissimoLiveProvider"]
-
-    MondialRelay["MondialRelayLiveProvider"]
-
-    PostgreSQL["PostgreSQL"]
-
-    SearchEndpoint --> HybridUseCase
-
-    HybridUseCase --> Repository
-
-    Repository --> CacheCheck
-
-    Repository --> PostgreSQL
-
-    CacheCheck --> ProviderFactory
-
-    ProviderFactory --> Colissimo
-
-    ProviderFactory --> MondialRelay
-
-    HealthEndpoint --> HealthUseCase
-
-    HealthUseCase --> ProviderFactory
-
-    API --> SearchEndpoint
-
-    API --> HealthEndpoint
+PP --> DB["(PostgreSQL)"]

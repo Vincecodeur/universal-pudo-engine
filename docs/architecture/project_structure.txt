@@ -177,7 +177,15 @@ universal-pudo-engine/
 │       ├── colissimo/
 │       ├── factory/
 │       ├── mock/
-│       └── mondial_relay/
+│       ├── mondial_relay/
+│       └── chronopost/
+│           ├── test_client.py
+│           ├── test_response_parser.py
+│           ├── test_chronopost_mapper.py
+│           ├── test_chronopost_pickup_provider.py
+│           ├── test_chronopost_live_provider.py
+│           └── test_real_xml_fixture.py
+│
 │
 ├── .env
 ├── .env.example

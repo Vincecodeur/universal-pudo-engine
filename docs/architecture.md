@@ -322,3 +322,19 @@ Benefits:
 - Reduced carrier API usage
 - Offline search capability
 - Better scalability
+
+### ChronopostLiveProvider
+
+Flow:
+
+ChronopostLiveProvider
+↓
+ChronopostClient
+↓
+Chronopost XML API
+↓
+ChronopostResponseParser
+↓
+ChronopostMapper
+↓
+PickupPointModel

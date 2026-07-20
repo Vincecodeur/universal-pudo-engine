@@ -387,6 +387,28 @@ Next:
 - Documentation synchronization
 - Incremental architecture evolution
 
+## Features
+
+- Multi-carrier pickup point search engine
+- PostgreSQL persistence layer
+- Hybrid Search (Database + Carrier API)
+- Automatic pickup point synchronization
+- Carrier lifecycle management
+- Provider health monitoring
+
+Supported carriers:
+
+- Colissimo (Live API)
+- Mondial Relay (Live API)
+- Chronopost (Live API)
+
+Architecture patterns:
+
+- Provider Pattern
+- Factory Pattern
+- Repository Pattern
+- Dependency Injection
+
 ---
 
 # License

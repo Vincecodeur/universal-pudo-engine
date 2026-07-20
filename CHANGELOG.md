@@ -1,25 +1,69 @@
-## [Unreleased]
+# v0.10.0 - 2026-07-20
 
-### Added
+## Added
 
-- ProviderHealth domain model
-- GetProviderHealthUseCase
-- ProviderHealthResponse schema
-- Health Router
-- GET /health/providers endpoint
+### Chronopost Integration
 
-### Changed
+- ChronopostClient
+- ChronopostResponseParser
+- ChronopostMapper
+- ChronopostPickupProvider
+- ChronopostLiveProvider
 
-- ProviderFactory is now exposed through health monitoring
+### Configuration
+
+- chronopost_account_number
+- chronopost_password
+
+### Dependency Injection
+
+- Chronopost provider registration
+- Chronopost integrated into ProviderFactory
+- Chronopost integrated into FastAPI dependencies
 
 ### Tests
 
-- Added health monitoring tests
-- Added endpoint validation tests
+Added:
 
-### Metrics
+- test_client.py
+- test_response_parser.py
+- test_chronopost_mapper.py
+- test_chronopost_pickup_provider.py
+- test_chronopost_live_provider.py
+- test_real_xml_fixture.py
 
-145 / 145 tests passing
+### Validation
+
+Validated carrier stack:
+
+Chronopost API
+↓
+ChronopostClient
+↓
+ChronopostResponseParser
+↓
+ChronopostMapper
+↓
+PickupPointModel
+↓
+ChronopostLiveProvider
+↓
+ProviderFactory
+
+### Result
+
+Total automated tests:
+
+155 passing
+0 failing
+
+Architecture status:
+
+3 live carrier integrations validated
+
+- Colissimo
+- Mondial Relay
+- Chronopost
 
 ## [0.6.0-dev] - 2026-07-19
 

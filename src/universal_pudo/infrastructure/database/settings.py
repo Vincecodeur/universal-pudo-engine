@@ -14,6 +14,10 @@ class DatabaseSettings(BaseSettings):
     mondial_relay_enseigne: str
 
     mondial_relay_private_key: str
+    
+    chronopost_account_number: str
+
+    chronopost_password: str
 
     model_config = SettingsConfigDict(
         env_file=".env",

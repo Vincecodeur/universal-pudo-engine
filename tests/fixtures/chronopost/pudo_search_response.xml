@@ -1,0 +1,36 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns1:recherchePointChronopostInterResponse xmlns:ns1="http://cxf.rechercheBt.soap.chronopost.fr/">
+         <return>
+            <errorCode>0</errorCode>
+            <errorMessage>Code retour OK</errorMessage>
+
+            <listePointRelais>
+               <actif>true</actif>
+
+               <adresse1>29 ROUTE DE TICAILLE</adresse1>
+               <adresse2/>
+               <adresse3/>
+
+               <codePays>FR</codePays>
+               <codePostal>31450</codePostal>
+
+               <coordGeolocalisationLatitude>43.4391666667</coordGeolocalisationLatitude>
+               <coordGeolocalisationLongitude>1.598055555560</coordGeolocalisationLongitude>
+
+               <identifiant>1487R</identifiant>
+
+               <listeHoraireOuverture>
+                  <horairesAsString>08:00-13:00 15:00-20:00</horairesAsString>
+               </listeHoraireOuverture>
+
+               <localite>AYGUESVIVES</localite>
+               <nom>LE BISTROT DU COIN</nom>
+
+               <typeDePoint>P</typeDePoint>
+            </listePointRelais>
+
+         </return>
+      </ns1:recherchePointChronopostInterResponse>
+   </soap:Body>
+</soap:Envelope>
