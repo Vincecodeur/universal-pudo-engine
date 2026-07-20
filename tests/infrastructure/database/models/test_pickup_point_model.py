@@ -29,6 +29,7 @@ def test_pickup_point_has_expected_columns() -> None:
 
     assert "opening_hours" in columns
     assert "active" in columns
+    assert "last_synced_at" in columns
 
 
 def test_pickup_point_primary_key() -> None:

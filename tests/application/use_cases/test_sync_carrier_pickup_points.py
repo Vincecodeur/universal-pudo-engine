@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from unittest.mock import Mock
 
 from universal_pudo.application.use_cases.sync_carrier_pickup_points import (
@@ -85,3 +87,44 @@ def test_sync_returns_zero_when_no_pickup_points() -> None:
     assert result == 0
 
     repository.upsert.assert_not_called()
+
+
+def test_sync_sets_last_synced_at() -> None:
+    pickup_point = Mock()
+
+    provider = DummyProvider(
+        [
+            pickup_point,
+        ]
+    )
+
+    factory = ProviderFactory(
+        {
+            "colissimo": provider,
+        }
+    )
+
+    repository = Mock()
+
+    use_case = SyncCarrierPickupPointsUseCase(
+        provider_factory=factory,
+        repository=repository,
+    )
+
+    result = use_case.execute(
+        carrier_id="colissimo",
+        country_code="FR",
+        postal_code="92130",
+        city="ISSY LES MOULINEAUX",
+    )
+
+    assert result == 1
+
+    assert isinstance(
+        pickup_point.last_synced_at,
+        datetime,
+    )
+
+    repository.upsert.assert_called_once_with(
+        pickup_point
+    )

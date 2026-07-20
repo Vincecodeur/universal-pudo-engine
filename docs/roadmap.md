@@ -6,23 +6,9 @@ Universal PUDO Engine is a carrier-agnostic pickup point platform designed to:
 
 - Normalize heterogeneous carrier APIs
 - Provide a canonical pickup point model
-- Synchronize carrier data into a local database
+- Synchronize carrier data into PostgreSQL
 - Support hybrid search strategies
 - Demonstrate integration architecture best practices
-
-Target Architecture:
-
-Carrier APIs
-↓
-Providers
-↓
-Canonical Models
-↓
-Synchronization Engine
-↓
-PostgreSQL
-↓
-Search API
 
 ---
 
@@ -30,7 +16,7 @@ Search API
 
 Current Test Count:
 
-122 passing tests
+128 / 128 PASSING
 
 Validated Integrations:
 
@@ -38,21 +24,11 @@ Validated Integrations:
 
 ✅ Colissimo (REST/JSON)
 
-Validated Components:
-
-✅ ProviderFactory
-
-✅ SearchLivePickupPointsUseCase
-
-✅ MondialRelayLiveProvider
-
-✅ ColissimoLiveProvider
-
 ---
 
 # Phase 1 - Foundations
 
-Status: ✅ Completed
+Status: ✅ COMPLETED
 
 Delivered:
 
@@ -69,7 +45,7 @@ Delivered:
 
 # Phase 2 - Provider Architecture
 
-Status: ✅ Completed
+Status: ✅ COMPLETED
 
 Delivered:
 
@@ -82,61 +58,52 @@ Delivered:
 
 # Phase 3 - Multi-Carrier Validation
 
-Status: ✅ Completed
+Status: ✅ COMPLETED
 
 Delivered:
 
+- Canonical PickupPointModel
 - Mondial Relay provider
 - Colissimo provider
-- Canonical PickupPointModel validation
+- Multi-provider validation
 
 ---
 
 # Phase 4 - Live Carrier Validation
 
-Status: ✅ Completed
+Status: ✅ COMPLETED
 
 Delivered:
 
-Mondial Relay:
-
-- Live SOAP integration
-- XML validation
-- Response parser
-- Fixture tests
-
-Colissimo:
-
-- Live REST integration
-- JSON validation
-- Fixture tests
+- Mondial Relay live SOAP validation
+- Colissimo live REST validation
+- Real fixture generation
+- Payload validation
 
 ---
 
 # Phase 5 - Production Live Providers
 
-Status: ✅ Completed
+Status: ✅ COMPLETED
 
 Delivered:
 
 - MondialRelayLiveProvider
 - ColissimoLiveProvider
-- Client layer
-- Mapping layer
 - Provider tests
+- Client abstraction
 
 ---
 
 # Phase 6 - Provider Factory
 
-Status: ✅ Completed
+Status: ✅ COMPLETED
 
 Delivered:
 
 - ProviderFactory
 - ProviderNotFoundError
 - SearchLivePickupPointsUseCase
-- Factory tests
 
 Architecture:
 
@@ -150,40 +117,94 @@ Live Provider
 
 # Phase 7 - Carrier Synchronization Engine
 
-Status: 🔄 In Progress
+Status: ✅ COMPLETED
 
-Objective:
+## Phase 7.1 - Sync Engine
 
-Synchronize carrier pickup points into PostgreSQL.
+Delivered:
 
-Target Flow:
+✅ SyncCarrierPickupPointsUseCase
 
-Carrier API
-↓
-Live Provider
-↓
-PickupPointModel
-↓
-PickupPointRepository
-↓
-PostgreSQL
+Features:
 
-Phase 7.1
-
-- SyncCarrierPickupPointsUseCase
-
-Phase 7.2
-
-- Synchronization strategies
-- Bulk save support
-
-Phase 7.3
-
-- Data freshness tracking
+- Provider resolution through ProviderFactory
+- Live carrier synchronization
+- Pickup point persistence
+- Synchronization statistics
 
 ---
 
-# Phase 8 - Hybrid Search Strategy
+## Phase 7.3 - Upsert Strategy
+
+Delivered:
+
+✅ find_by_carrier_pickup_id()
+
+✅ upsert()
+
+Business Key:
+
+(carrier_id, carrier_pickup_id)
+
+Benefits:
+
+- Repeatable synchronization
+- Duplicate prevention
+- Existing pickup point updates
+- Stable synchronization behavior
+
+---
+
+## Phase 7.4 - Data Freshness V1
+
+Delivered:
+
+✅ last_synced_at
+
+✅ Alembic migration
+
+✅ Model update
+
+✅ Repository support
+
+✅ Sync engine integration
+
+Benefits:
+
+- Synchronization traceability
+- Future stale pickup point detection
+- Future cache strategy support
+- Foundation for hybrid search
+
+Current Synchronization Flow:
+
+Carrier API
+↓
+Provider
+↓
+SyncCarrierPickupPointsUseCase
+↓
+last_synced_at update
+↓
+Repository.upsert()
+↓
+PostgreSQL
+
+---
+
+# Phase 7.5 - Stale Pickup Point Detection
+
+Status: Planned
+
+Objectives:
+
+- Detect stale pickup points
+- Identify outdated synchronized data
+- Prepare automatic cleanup strategy
+
+---
+
+# Phase 8 - Hybrid Search
 
 Status: Planned
 
@@ -193,7 +214,7 @@ PostgreSQL First
 ↓
 Fallback Live Search
 ↓
-Cache Refresh
+Synchronization Refresh
 
 Goals:
 
@@ -203,33 +224,9 @@ Goals:
 
 ---
 
-# Phase 9 - Data Freshness
+# Phase 9 - Provider Health
 
-Planned
-
-Fields under consideration:
-
-- last_sync_at
-- last_seen_at
-- source
-
----
-
-# Phase 10 - Capability Normalization
-
-Planned
-
-Future canonical concepts:
-
-- CarrierConstraint
-- CarrierService
-- CarrierCapability
-
----
-
-# Phase 11 - Provider Health
-
-Planned
+Status: Planned
 
 Features:
 
@@ -239,9 +236,9 @@ Features:
 
 ---
 
-# Phase 12 - Additional Carriers
+# Phase 10 - Additional Carriers
 
-Planned
+Status: Planned
 
 Candidates:
 
@@ -253,33 +250,12 @@ Candidates:
 
 ---
 
-# Phase 13 - Observability
+# Success Criteria
 
-Planned
-
-Features:
-
-- Metrics
-- Structured logging
-- Tracing
-
----
-
-# Phase 14 - Release 1.0
-
-Planned
-
-Deliverables:
-
-- Final documentation
-- ADR review
-- Architecture diagrams
-- Production-ready repository
-
-Success Criteria:
-
-- Multiple live carriers
-- Hybrid search architecture
-- Synchronization engine
+- Multi-carrier support
+- Live carrier integrations
+- Repeatable synchronization
+- Data freshness tracking
+- Hybrid search capability
 - Stable API
-- Fully documented
+- Fully documented architecture

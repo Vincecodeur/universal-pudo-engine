@@ -4,6 +4,32 @@
 
 ### Added
 
+- SyncCarrierPickupPointsUseCase
+- PickupPointRepository.find_by_carrier_pickup_id()
+- PickupPointRepository.upsert()
+- Pickup point freshness tracking
+- last_synced_at field
+- Alembic migration for freshness tracking
+
+### Changed
+
+- Synchronization now uses upsert strategy
+- Synchronization is repeatable
+- Duplicate pickup points are prevented
+- Sync engine updates freshness metadata
+
+### Tests
+
+- Added repository lookup tests
+- Added repository upsert tests
+- Added synchronization freshness tests
+
+### Current Status
+
+128 / 128 tests passing
+
+### Added
+
 - ColissimoClient
 - ColissimoLiveProvider
 - MondialRelayLiveProvider

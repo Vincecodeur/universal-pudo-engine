@@ -1,3 +1,6 @@
+from datetime import datetime
+from datetime import timezone
+
 from universal_pudo.infrastructure.database.repositories.pickup_point_repository import (
     PickupPointRepository,
 )
@@ -34,9 +37,17 @@ class SyncCarrierPickupPointsUseCase:
             city=city,
         )
 
+        synced_at = datetime.now(
+            timezone.utc
+        )
+
         for pickup_point in pickup_points:
+            pickup_point.last_synced_at = synced_at
+
             self.repository.upsert(
                 pickup_point
             )
 
-        return len(pickup_points)
+        return len(
+            pickup_points
+        )

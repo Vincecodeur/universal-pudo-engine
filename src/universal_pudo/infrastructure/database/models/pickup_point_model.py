@@ -1,3 +1,9 @@
+
+from datetime import datetime
+
+from sqlalchemy import DateTime
+from sqlalchemy import func
+
 from sqlalchemy import Boolean
 from sqlalchemy import ForeignKey
 from sqlalchemy import Float
@@ -86,3 +92,11 @@ class PickupPointModel(Base):
         default=True,
         nullable=False,
     )
+    
+
+    last_synced_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+    )
+    

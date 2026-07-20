@@ -97,6 +97,7 @@ Example:
 | capabilities        |       TEXT[] |      Yes | List of supported capabilities  |
 | created_at          |  TIMESTAMPTZ |      Yes | Creation timestamp              |
 | updated_at          |  TIMESTAMPTZ |      Yes | Last update timestamp           |
+| last_synced_at      |  TIMESTAMPTZ |      Yes | Last synchronization timestamp  |
 
 ---
 
@@ -236,6 +237,7 @@ The initial strategy remains real-time API calls.
 | metadata          |          JSONB |       No | Carrier-specific metadata                 |
 | created_at        |    TIMESTAMPTZ |      Yes | Creation timestamp                        |
 | updated_at        |    TIMESTAMPTZ |      Yes | Last update timestamp                     |
+| last_synced_at    |    TIMESTAMPTZ |      Yes | Last synchronization timestamp            |
 
 ---
 
@@ -449,6 +451,45 @@ Future fields may include:
 These fields are intentionally excluded from V1 until real carrier constraints are known.
 
 ---
+
+# 12.1 Current Freshness Strategy
+
+V1 introduces a minimal freshness tracking model.
+
+Field:
+
+last_synced_at
+
+Purpose:
+
+Track when Universal PUDO Engine successfully synchronized a pickup point from a carrier provider.
+
+Usage:
+
+- synchronization auditing
+- stale pickup point detection
+- cache management
+- future hybrid search strategy
+
+Flow:
+
+Carrier API
+↓
+Provider
+↓
+Sync Engine
+↓
+last_synced_at updated
+↓
+Repository.upsert()
+↓
+PostgreSQL
+
+Important:
+
+last_synced_at does not represent carrier-side update timestamps.
+
+It only represents synchronization performed by Universal PUDO Engine.
 
 # 13. Initial SQL Draft
 
