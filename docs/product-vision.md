@@ -1,262 +1,308 @@
 # Universal PUDO Engine
 
-Version: 1.0 (Draft)
+## Vision
 
----
+Universal PUDO Engine est un moteur universel de recherche et de sélection de points relais multi-transporteurs.
 
-# Vision
+L'objectif du projet est de fournir une couche d'abstraction unique permettant de rechercher, normaliser et sélectionner des points relais indépendamment du transporteur utilisé.
 
-Universal PUDO Engine is a transport-agnostic engine designed to search, normalize, resolve and later recommend pickup points (PUDO) across multiple carrier networks through a unified interface.
+Le moteur doit être réutilisable dans différents contextes :
 
-The engine aims to eliminate carrier-specific complexity by exposing a common domain model, SDK and API that can be consumed by OMS, WMS, OXM, TMS, marketplaces, e-commerce platforms and custom applications.
+- OMS
+- WMS
+- TMS
+- Checkout
+- CMS
+- SaaS
 
-The project focuses on portability, interoperability and extensibility.
+Le moteur constitue le coeur de l'écosystème Universal PUDO.
 
----
-
-# Problem Statement
-
-Carrier pickup point networks expose different APIs, authentication mechanisms, data structures and search methods.
-
-Consequently, every consuming system must implement carrier-specific logic.
-
-This creates several operational challenges:
-
-- Pickup point information is fragmented across carriers.
-- Marketplaces may provide pickup addresses without carrier identifiers.
-- Carrier APIs evolve independently.
-- New carriers require new integrations.
-
-A normalized abstraction layer is required.
-
----
-
-# Mission
-
-Provide a reusable engine capable of:
-
-- Searching pickup points
-- Normalizing carrier data
-- Abstracting carrier APIs
-- Exposing a Python SDK
-- Exposing a REST API
-- Supporting future resolution and recommendation capabilities
-
-The engine must remain independent from any user interface.
+Toutes les implémentations doivent être construites autour de ce coeur sans créer de dépendance fonctionnelle ou technique vers une implémentation spécifique.
 
 ---
 
 # Core Principles
 
-## API Agnostic
-
-Consumers must not need to understand transporteur-specific APIs.
-
----
-
 ## Carrier Agnostic
 
-All carriers must expose a common domain model.
+Le moteur ne doit contenir aucune logique métier dépendante d'un transporteur spécifique.
+
+Chaque transporteur est intégré via :
+
+- Provider Pattern
+- Mapper Pattern
+- Adapter Pattern
+
+Le moteur doit supporter :
+
+- Colissimo
+- Mondial Relay
+- Chronopost
+- GLS
+- UPS
+- DPD
+- InPost
+- autres transporteurs
+
+sans modification du domaine métier.
 
 ---
 
-## Extensible
+## Build Once, Consume Anywhere
 
-New carriers must be added without modifying the core business engine.
+Le moteur doit pouvoir être consommé par plusieurs produits ou plateformes.
 
----
+Exemples :
 
-## User-Owned Connections
+- OMS
+- WMS
+- TMS
+- Checkout
+- SDK
+- CMS
+- SaaS
 
-Carrier accounts remain owned by customers.
-
-The engine acts as a normalization and orchestration layer above carrier APIs.
-
----
-
-## Simplicity First
-
-Dependencies requiring:
-
-- Cloud account creation
-- Billing activation
-- Credit card registration
-- Advanced developer knowledge
-
-must provide a strong and measurable value.
-
-Otherwise, simpler alternatives should be preferred.
+Une seule implémentation métier doit être maintenue.
 
 ---
 
-## International Ready
+# Product Architecture
 
-The first implementation targets France.
+L'écosystème Universal PUDO est constitué de plusieurs couches.
 
-The architecture must support international expansion without redesign.
+## Universal PUDO Core
 
----
+Le Core est le produit principal.
 
-# Scope
+Responsabilités :
 
-## Included
+- abstraction transporteurs
+- recherche de points relais
+- normalisation des données
+- orchestration des providers
+- sélection de points relais
+- hybrid search
 
-### Search
+Le Core ne contient pas :
 
-Search pickup points using:
-
-- Address
-- Postal code
-- City
-- Coordinates
-
----
-
-### Normalization
-
-Convert carrier-specific responses into a unified model.
-
----
-
-### Carrier Abstraction
-
-Expose a single interface for all supported carriers.
+- gestion utilisateurs
+- gestion organisations
+- portail SaaS
+- paiement
+- billing
+- credential management
 
 ---
 
-### Python SDK
+## Universal PUDO SaaS
 
-Provide a reusable Python SDK.
+Le SaaS est une implémentation du Core.
 
----
+Responsabilités :
 
-### REST API
+- utilisateurs
+- organisations
+- dashboard
+- administration
+- comptes transporteurs
+- authentification
 
-Provide a reusable HTTP API.
+Le SaaS utilise le Core.
 
----
-
-### Provider Framework
-
-Support isolated carrier integrations.
-
----
-
-### Integration Lifecycle Management
-
-Support integration lifecycle statuses:
-
-- ACTIVE
-- DEPRECATED
-- UNLISTED
-- SUNSET
-- REMOVED
+Le Core ne dépend jamais du SaaS.
 
 ---
 
-# Out Of Scope
+## Universal PUDO Integration Layer
 
-The following features are explicitly excluded from the first version.
+Permet l'intégration du moteur dans :
 
-## User Portal
+- OMS
+- WMS
+- TMS
+- Checkout
 
-Planned for a future release.
+Le système hôte reste propriétaire :
+
+- des credentials transporteurs
+- de l'authentification
+- de la configuration métier
 
 ---
 
-## Interactive Maps
+## Universal PUDO SDK
 
-Planned for a future release.
+Permet une intégration simplifiée dans :
+
+- applications Python
+- applications TypeScript
+- intégrations custom
+
+---
+
+## Universal PUDO CMS Layer
+
+Permet l'intégration dans :
+
+- WooCommerce
+- PrestaShop
+- Shopify
+- Magento
+
+---
+
+# Credential Ownership Strategy
+
+## Architectural Decision
+
+ADR-0002
+
+Décision retenue :
+
+Host Managed Credentials
+
+Le Universal PUDO Core n'est jamais propriétaire des credentials transporteurs.
+
+Le Core est credential agnostic.
+
+---
+
+## OMS
+
+Les credentials appartiennent à l'OMS.
+
+Exemple :
+
+- API Key Colissimo
+- Identifiants GLS
+- Credentials Chronopost
+
+Le Core consomme uniquement les connecteurs fournis par l'OMS.
+
+---
+
+## WMS
+
+Les credentials appartiennent au WMS.
+
+Le Core ne stocke rien.
+
+---
+
+## TMS
+
+Les credentials appartiennent au TMS.
+
+Le Core ne stocke rien.
 
 ---
 
 ## CMS Plugins
 
-Planned for future releases:
+Le plugin CMS gère les credentials.
 
-- WooCommerce
-- Shopify
-- Prestashop
-- Magento
-- Shopware
-- Wix
+Le Core ne stocke rien.
 
 ---
 
-## Mobile Applications
+## SaaS
 
-Out of scope.
+Le SaaS peut gérer ses propres comptes transporteurs.
 
----
+Cette responsabilité appartient au SaaS Layer.
 
-## Recommendation Engine
-
-Future release.
+Pas au Core.
 
 ---
 
-## Operational Intelligence
+# Current Architecture
 
-Future release.
+Architecture utilisée :
 
----
-
-# Domain Model
-
-## PickupPoint
-
-A PickupPoint can be:
-
-- STORE
-- LOCKER
-
-The pickup type must always be visible and exposed to consumers.
+- Hexagonal Architecture
+- Domain Driven Design
+- Provider Pattern
+- Mapper Pattern
+- Repository Pattern
+- Factory Pattern
+- Dependency Injection
 
 ---
 
-# Initial Carrier Coverage
+# Current Status
 
-## MVP
+## Validated Carriers
 
-- Colissimo Pickup
+- Colissimo
 - Mondial Relay
-- Chronopost Pickup
+- Chronopost
+
+## Automated Tests
+
+155 passing tests
+
+## Proven Components
+
+- ProviderFactory
+- Hybrid Search
+- Synchronization Engine
+- FastAPI Integration
+- Live Provider Architecture
 
 ---
 
-## V1 Expansion
+# Roadmap Objectives
 
-- GLS France
-- UPS Access Point
-- DPD France
+## Short Term
 
----
-
-# Integration Strategy
-
-An integration represents a coherent API.
-
-A single integration may support multiple countries when:
-
-- Authentication is shared
-- Endpoints are shared
-- Data models are shared
-
-Separate APIs require separate integrations.
+- Validation live Colissimo
+- Validation live Chronopost
+- Création des fixtures réelles
 
 ---
 
-# Long-Term Vision
+## Medium Term
 
-Universal PUDO Engine is intended to become the foundation of a larger ecosystem composed of:
+- Frontend MVP
+- Carte OpenStreetMap
+- Sélection de points relais
+- Universal PUDO SaaS
 
-- Core Engine
-- Python SDK
-- REST API
-- Business Portal
-- Commerce Connectors
-- OMS Integrations
-- WMS Integrations
+---
+
+## Long Term
+
+- OMS Integration Layer
+- WMS Integration Layer
+- TMS Integration Layer
+- SDK
 - CMS Plugins
+- SaaS Platform
 
-The engine remains the single source of business logic.
+---
+
+# Out Of Scope For Now
+
+Les éléments suivants ne sont pas prioritaires :
+
+- Billing
+- Stripe
+- Invoicing
+- Subscriptions
+
+Ils restent dans le backlog.
+
+---
+
+# Final Goal
+
+Créer une plateforme universelle de recherche et de sélection de points relais capable d'être utilisée :
+
+- directement par des utilisateurs finaux via un portail SaaS
+- intégrée dans un OMS
+- intégrée dans un WMS
+- intégrée dans un TMS
+- intégrée dans un CMS
+- intégrée dans un checkout
+
+tout en conservant un coeur métier unique, indépendant et réutilisable.

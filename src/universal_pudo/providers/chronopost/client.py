@@ -24,24 +24,24 @@ class ChronopostClient:
     def search_pickup_points(
         self,
         *,
-        address: str,
+        address: str | None = None,
         zip_code: str,
         city: str,
         country_code: str = "FR",
         pickup_type: str = "P",
-        product_code: str = "1",
+        product_code: str = "86",
         service: str = "L",
-        weight: str = "1000",
+        weight: str = "1",
         shipping_date: str,
-        max_point_chronopost: str = "3",
-        max_distance_search: str = "50",
+        max_point_chronopost: str = "10",
+        max_distance_search: str = "10",
         holiday_tolerant: str = "1",
         language: str = "FR",
     ) -> str:
+
         params = {
             "accountNumber": self.account_number,
             "password": self.password,
-            "address": address,
             "zipCode": zip_code,
             "city": city,
             "countryCode": country_code,
@@ -55,6 +55,9 @@ class ChronopostClient:
             "holidayTolerant": holiday_tolerant,
             "language": language,
         }
+
+        if address:
+            params["address"] = address
 
         response = requests.get(
             self.BASE_URL,

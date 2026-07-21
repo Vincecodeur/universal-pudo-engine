@@ -3,16 +3,20 @@ from datetime import timedelta
 from pathlib import Path
 from pprint import pprint
 
-import json
-
 from universal_pudo.infrastructure.database.settings import (
     DatabaseSettings,
 )
-from universal_pudo.providers.colissimo.client import (
-    ColissimoClient,
+
+from universal_pudo.providers.chronopost.client import (
+    ChronopostClient,
 )
-from universal_pudo.providers.colissimo.mapper import (
-    ColissimoMapper,
+
+from universal_pudo.providers.chronopost.response_parser import (
+    ChronopostResponseParser,
+)
+
+from universal_pudo.providers.chronopost.mapper import (
+    ChronopostMapper,
 )
 
 
@@ -41,30 +45,34 @@ def pickup_point_to_dict(
 def main() -> None:
     settings = DatabaseSettings()
 
-    client = ColissimoClient(
-        api_key=settings.colissimo_api_key,
+    client = ChronopostClient(
+        account_number=settings.chronopost_account_number,
+        password=settings.chronopost_password,
     )
 
     shipping_date = (
         datetime.now()
-        + timedelta(
-            days=1,
-        )
+        + timedelta(days=1)
     ).strftime(
         "%d/%m/%Y"
     )
 
-    response_payload = client.search_pickup_points(
-        address="",
-        zip_code="75001",
-        city="PARIS",
+    xml_response = client.search_pickup_points(
+        address="38 grande rue",
+        zip_code="92130",
+        city="ISSY LES MOULINEAUX",
         country_code="FR",
         shipping_date=shipping_date,
+        product_code="86",
+        weight="1",
+        max_point_chronopost="10",
+        max_distance_search="10",
+
     )
 
     fixture_path = Path(
-        "tests/data/colissimo/"
-        "findRDVPointRetraitAcheminement_live_response.json"
+        "tests/fixtures/chronopost/"
+        "recherchePointChronopostInter_live_response.xml"
     )
 
     fixture_path.parent.mkdir(
@@ -73,35 +81,32 @@ def main() -> None:
     )
 
     fixture_path.write_text(
-        json.dumps(
-            response_payload,
-            indent=2,
-            ensure_ascii=False,
-        ),
+        xml_response,
         encoding="utf-8",
     )
 
-    pickup_points_payload = response_payload.get(
-        "listePointRetraitAcheminement",
-        [],
+    payloads = (
+        ChronopostResponseParser.extract_pickup_points(
+            xml_response
+        )
     )
 
     print(
-        f"Found {len(pickup_points_payload)} "
-        "Colissimo pickup points"
+        f"Found {len(payloads)} Chronopost pickup points"
     )
 
-    if not pickup_points_payload:
-        print("No pickup points returned.")
-        print("Raw response:")
-        pprint(response_payload)
+    if not payloads:
+        print("No pickup points returned")
         return
 
-    pickup_point = ColissimoMapper.to_pickup_point(
-        pickup_points_payload[0]
+    pickup_point = (
+        ChronopostMapper.to_pickup_point(
+            payloads[0]
+        )
     )
 
     print("First mapped PickupPointModel:")
+
     pprint(
         pickup_point_to_dict(
             pickup_point

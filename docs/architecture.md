@@ -14,7 +14,7 @@ The application normalizes heterogeneous carrier responses into a single canonic
 - Domain Driven Design
 - Provider Pattern
 - Mapper Pattern
-- Factory Pattern (planned)
+- Factory Pattern
 
 ---
 
@@ -232,11 +232,30 @@ Validation Status:
 
 ---
 
+## Chronopost
+
+Protocol:
+
+XML
+
+Components:
+
+- ChronopostClient
+- ChronopostResponseParser
+- ChronopostMapper
+- ChronopostLiveProvider
+
+Validation Status:
+
+✅ Live validated
+✅ XML fixture validated
+✅ Automated tests validated
+
 # Test Architecture
 
 Current Status:
 
-✅ 117 tests passing
+✅ 156 tests passing
 
 Coverage Areas:
 
@@ -338,3 +357,114 @@ ChronopostResponseParser
 ChronopostMapper
 ↓
 PickupPointModel
+
+# Credential Ownership Strategy
+
+## Decision
+
+Universal PUDO Core is credential agnostic.
+
+The Core never stores:
+
+- API Keys
+- Passwords
+- Tokens
+- Carrier Accounts
+
+The Core only consumes carrier connectivity.
+
+---
+
+# Credential Ownership Matrix
+
+OMS
+
+Owns:
+
+- carrier credentials
+
+Uses:
+
+- Universal PUDO Core
+
+---
+
+WMS
+
+Owns:
+
+- carrier credentials
+
+Uses:
+
+- Universal PUDO Core
+
+---
+
+TMS
+
+Owns:
+
+- carrier credentials
+
+Uses:
+
+- Universal PUDO Core
+
+---
+
+CMS Plugin
+
+Owns:
+
+- carrier credentials
+
+Uses:
+
+- Universal PUDO Core
+
+---
+
+SaaS Portal
+
+Owns:
+
+- carrier credentials
+
+Uses:
+
+- Universal PUDO Core
+
+---
+
+# Architecture Layers
+
+Universal PUDO Core
+
+↓
+
+Frontend Layer
+
+↓
+
+SaaS Layer
+
+↓
+
+Embedded Integration Layer
+
+↓
+
+SDK Layer
+
+↓
+
+CMS Layer
+
+↓
+
+Advanced Features
+
+↓
+
+Platform Hardening

@@ -1,5 +1,122 @@
 # v0.10.0 - 2026-07-20
 
+### Fixed
+
+#### Colissimo
+
+- Fixed Colissimo live API payload key by replacing `apikey` with `apiKey`.
+
+#### Chronopost
+
+- Updated default PUDO productCode from `1` to `86` to match Chronopost PUDO documentation.
+- Removed empty GET parameters from Chronopost requests.
+- Aligned live validation requests with official Chronopost documentation examples.
+
+### Validated
+
+#### Chronopost Live Integration
+
+Validated flow:
+
+Chronopost API
+↓
+XML Response
+↓
+ChronopostResponseParser
+↓
+ChronopostMapper
+↓
+PickupPointModel
+
+Live validation result:
+
+- 10 pickup points returned
+- Real API connectivity validated
+- Real XML response validated
+- ResponseParser validated
+- Mapper validated
+- PickupPointModel generation validated
+
+Example validated pickup point:
+
+Carrier:
+chronopost
+
+Carrier Pickup ID:
+750DG
+
+Name:
+PAPH PÔLE AUTONOMIE SERVICES À LA PERSONNE
+
+Postal Code:
+92130
+
+City:
+ISSY LES MOULINEAUX
+
+Coordinates:
+48.824749
+2.272234
+
+#### Colissimo Live Integration
+
+Validated flow:
+
+Colissimo REST API
+↓
+JSON Response
+↓
+ColissimoMapper
+↓
+PickupPointModel
+
+Live validation result:
+
+- 20 pickup points returned
+- Real API connectivity validated
+- Real payload mapping validated
+- PickupPointModel generation validated
+
+Example validated pickup point:
+
+Carrier:
+colissimo
+
+Carrier Pickup ID:
+755000
+
+Name:
+BUREAU DE POSTE PARIS LOUVRE
+
+Postal Code:
+75001
+
+City:
+PARIS
+
+Coordinates:
+48.8646
+2.343
+
+### Phase 10.3 Completed
+
+Validated live integrations:
+
+- Mondial Relay
+- Colissimo
+- Chronopost
+
+All three carriers successfully validated with:
+
+- Real API responses
+- Real payload parsing
+- Real payload mapping
+- PickupPointModel conversion
+
+Current result:
+
+156 / 156 tests passing
+
 ## Added
 
 ### Chronopost Integration
@@ -54,7 +171,7 @@ ProviderFactory
 
 Total automated tests:
 
-155 passing
+15 passing
 0 failing
 
 Architecture status:

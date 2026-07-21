@@ -36,7 +36,7 @@ class ColissimoClient:
     ) -> dict[str, Any]:
 
         payload = {
-            "apikey": self.api_key,
+            "apiKey": self.api_key,
             "address": address,
             "zipCode": zip_code,
             "city": city,
