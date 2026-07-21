@@ -1,0 +1,28 @@
+@(
+"===== README ====="
+Get-Content README.md
+
+"===== PYPROJECT ====="
+Get-Content pyproject.toml
+
+"===== PRODUCT VISION ====="
+Get-Content docs\product-vision.md
+
+"===== ARCHITECTURE ====="
+Get-Content docs\architecture.md
+
+"===== ROADMAP ====="
+Get-Content docs\roadmap.md
+
+"===== PROJECT STATUS ====="
+Get-Content docs\architecture\project_status.md
+
+"===== CHANGELOG ====="
+Get-Content CHANGELOG.md
+
+"===== GIT STATUS ====="
+git status
+
+"===== GIT LOG ====="
+git log --oneline -10
+) | Out-File core_audit.txt

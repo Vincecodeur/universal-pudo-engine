@@ -1,10 +1,10 @@
 [project]
 name = "universal-pudo-engine"
-version = "0.1.0"
+version = "1.0.0"
 description = "Carrier-agnostic engine to search, normalize and resolve pickup points across multiple carrier networks."
 readme = "README.md"
 requires-python = ">=3.14"
-license = { text = "License not yet selected" }
+license = { text = "Apache-2.0" }
 authors = [
     { name = "Vincent Gueret" }
 ]
@@ -19,7 +19,7 @@ keywords = [
     "postgresql"
 ]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries",
     "Topic :: Internet :: WWW/HTTP :: HTTP Servers",

@@ -1,90 +1,229 @@
 # Universal PUDO Engine Roadmap
 
-## Vision
+## 1. Vision
 
-Universal PUDO Engine is a carrier-agnostic pickup point platform designed to:
+Universal PUDO Engine is a carrier-agnostic Core engine designed to:
 
-- Normalize heterogeneous carrier APIs
-- Provide a canonical pickup point model
-- Synchronize carrier data into PostgreSQL
-- Support hybrid search strategies
-- Demonstrate integration architecture best practices
+- normalize heterogeneous carrier APIs
+- provide a canonical pickup point model
+- support live carrier search
+- synchronize carrier data into PostgreSQL
+- support hybrid search strategies
+- expose stable public Core interfaces
+- enable future SaaS, SDK, CMS, OMS, WMS and TMS integrations
 
----
+This roadmap now represents the Core roadmap.
 
-# Current Status
+The SaaS roadmap will live in a separate repository.
 
-Current Test Count:
+## 2. Current Status
 
-156 / 156 PASSING
+Repository:
 
-Validated Integrations:
+universal-pudo-engine
 
-✅ Colissimo (REST/JSON)
-✅ Mondial Relay (SOAP/XML)
-✅ Chronopost (XML)
+Repository role:
 
-Architecture Status:
+Reusable Core
 
-✅ Proven Extensible
+Current release candidate:
 
----
+v1.0.0
 
-# Phase 1 - Foundations
+Current status:
 
-Status: ✅ COMPLETED
+CORE FREEZE CANDIDATE
 
----
+Automated tests:
 
-# Phase 2 - Provider Architecture
+157 passed
+1 warning
+0 failed
 
-Status: ✅ COMPLETED
+Validated live carrier integrations:
 
----
+- Colissimo
+- Mondial Relay
+- Chronopost
 
-# Phase 3 - Multi-Carrier Validation
+Architecture status:
 
-Status: ✅ COMPLETED
+Proven extensible
 
----
+Repository boundary:
 
-# Phase 4 - Live Carrier Validation
+Core and SaaS separated
 
-Status: ✅ COMPLETED
+License:
 
----
+Apache License 2.0
 
-# Phase 5 - Production Live Providers
+## 3. Core Completion Summary
 
-Status: ✅ COMPLETED
+The Core currently includes:
 
----
+- domain model
+- provider contracts
+- carrier-specific provider implementations
+- ProviderFactory
+- live carrier search
+- hybrid search
+- synchronization engine
+- stale pickup point detection
+- provider health
+- FastAPI integration
+- real response fixtures
+- automated tests
+- architecture documentation
+- ADR-0001
+- ADR-0002
+- ADR-0003
+- ADR-0004
 
-# Phase 6 - Provider Factory
+## 4. Phase 1 - Foundations
 
-Status: ✅ COMPLETED
+Status:
 
----
+COMPLETED
 
-# Phase 7 - Carrier Synchronization Engine
+Delivered:
 
-Status: ✅ COMPLETED
+- project structure
+- Python package structure
+- core domain concepts
+- initial FastAPI application
+- testing foundation
+- documentation foundation
 
-## Phase 7.1 - Sync Engine
+## 5. Phase 2 - Provider Architecture
 
-✅ COMPLETED
+Status:
 
-## Phase 7.3 - Upsert Strategy
+COMPLETED
 
-✅ COMPLETED
+Delivered:
 
-## Phase 7.4 - Data Freshness V1
+- PickupProvider contract
+- mock provider
+- provider abstraction
+- provider testing strategy
+- canonical pickup point model foundation
 
-✅ COMPLETED
+## 6. Phase 3 - Multi-Carrier Validation
 
-## Phase 7.5 - Stale Pickup Point Detection
+Status:
 
-✅ COMPLETED
+COMPLETED
+
+Delivered:
+
+- Colissimo provider foundation
+- Mondial Relay provider foundation
+- carrier-specific mapping strategy
+- provider-specific tests
+- ADR-0001 Provider Mapping Strategy
+
+## 7. Phase 4 - Live Carrier Validation
+
+Status:
+
+COMPLETED
+
+Delivered:
+
+- live API connectivity proof
+- real carrier payload retrieval
+- real payload parsing
+- real payload mapping
+- real fixture storage
+- live validation scripts
+
+Validated carriers:
+
+- Mondial Relay
+- Colissimo
+- Chronopost
+
+## 8. Phase 5 - Production Live Providers
+
+Status:
+
+COMPLETED
+
+Delivered:
+
+- ColissimoLiveProvider
+- MondialRelayLiveProvider
+- ChronopostLiveProvider
+- live provider test coverage
+- integration with application use cases
+
+## 9. Phase 6 - Provider Factory
+
+Status:
+
+COMPLETED
+
+Delivered:
+
+- ProviderFactory
+- provider resolution by carrier
+- supported carrier discovery
+- provider factory tests
+- public interface alignment with ADR-0003
+
+Result:
+
+Use cases no longer need to manually construct carrier providers.
+
+## 10. Phase 7 - Carrier Synchronization Engine
+
+Status:
+
+COMPLETED
+
+### 10.1 Phase 7.1 - Sync Engine
+
+Status:
+
+COMPLETED
+
+Delivered:
+
+- SyncCarrierPickupPointsUseCase
+- synchronization flow from provider to repository
+- persistence of pickup points
+
+### 10.2 Phase 7.3 - Upsert Strategy
+
+Status:
+
+COMPLETED
+
+Delivered:
+
+- pickup point upsert support
+- update existing pickup points
+- create missing pickup points
+- preserve canonical identity
+
+### 10.3 Phase 7.4 - Data Freshness V1
+
+Status:
+
+COMPLETED
+
+Delivered:
+
+- last_synced_at support
+- cache freshness validation
+- freshness-based search behavior
+
+### 10.4 Phase 7.5 - Stale Pickup Point Detection
+
+Status:
+
+COMPLETED
 
 Delivered:
 
@@ -93,55 +232,55 @@ Delivered:
 - stale pickup point detection
 - automatic deactivation strategy
 
----
+## 11. Phase 8 - Hybrid Search
 
-# Phase 8 - Hybrid Search
+Status:
 
-Status: COMPLETED
+COMPLETED
 
-## Phase 8.1 - Hybrid Search Core
+### 11.1 Phase 8.1 - Hybrid Search Core
 
-✅ COMPLETED
+Status:
+
+COMPLETED
 
 Delivered:
 
 - SearchHybridPickupPointsUseCase
 - PostgreSQL-first search
-- Live provider fallback
-- Automatic cache population
-- Automatic synchronization after live search
+- live provider fallback
+- automatic cache population
+- automatic synchronization after live search
 
----
+### 11.2 Phase 8.2 - Fresh Cache Strategy
 
-## Phase 8.2 - Fresh Cache Strategy
+Status:
 
-✅ COMPLETED
-
-Delivered:
-
-- hybrid_search_cache_ttl_days
-- Repository cache freshness validation
-- is_cache_fresh()
-- Automatic refresh on stale cache
-- Cache TTL configuration
-
----
-
-## Phase 8.3 - FastAPI Integration
-
-✅ COMPLETED
+COMPLETED
 
 Delivered:
 
-- Provider dependency injection
-- get_provider_factory()
-- ColissimoLiveProvider integration
-- MondialRelayLiveProvider integration
-- SearchHybridPickupPointsUseCase exposed through FastAPI
-- Live carrier search accessible via API
-- Hybrid Search enabled on /pickup-points/search
+- cache freshness validation
+- repository freshness checks
+- stale cache refresh
+- cache TTL configuration
 
-Current Search Flow:
+### 11.3 Phase 8.3 - FastAPI Integration
+
+Status:
+
+COMPLETED
+
+Delivered:
+
+- ProviderFactory dependency injection
+- Colissimo provider integration
+- Mondial Relay provider integration
+- Chronopost provider integration
+- hybrid search exposed through FastAPI
+- live carrier search accessible through API routes
+
+Current search flow:
 
 API Request
 ↓
@@ -150,41 +289,57 @@ SearchHybridPickupPointsUseCase
 Repository Search
 ↓
 Results Found?
-├─ No
-│ ↓
-│ ProviderFactory
-│ ↓
-│ Live Provider
-│ ↓
-│ upsert()
-│ ↓
-│ Return
-│
-└─ Yes
 ↓
-is_cache_fresh()
+If no results:
+ProviderFactory
 ↓
-Fresh ?
-├─ Yes → Return Cache
-└─ No
+Live Provider
 ↓
+Upsert
+↓
+Return
+
+If results found:
+Cache Fresh?
+↓
+If fresh:
+Return Cache
+
+If stale:
 Live Provider
 ↓
 Refresh
 ↓
-upsert()
+Upsert
 ↓
 Return
 
-# Phase 9 - Provider Health
+## 12. Phase 9 - Provider Health
 
-Status: Planned
+Status:
 
----
+COMPLETED
 
-# Phase 10 - Chronopost Integration
+Delivered:
 
-Status: ✅ COMPLETED
+- ProviderHealth domain concept
+- provider health use case
+- provider health schema
+- health router tests
+- provider health tests
+
+Purpose:
+
+- support diagnostics
+- prepare monitoring
+- expose provider status
+- improve operational visibility
+
+## 13. Phase 10 - Chronopost Integration
+
+Status:
+
+COMPLETED
 
 Delivered:
 
@@ -196,25 +351,21 @@ Delivered:
 - ProviderFactory integration
 - FastAPI dependency integration
 - XML fixture validation
-- Automated tests
+- automated tests
 
-Result:
+Validated flow:
 
-Third live carrier integrated successfully without architecture refactoring.
-
-Validated Flow:
-
-Chronopost
+Chronopost API
 ↓
-Client
+ChronopostClient
 ↓
-Parser
+ChronopostResponseParser
 ↓
-Mapper
+ChronopostMapper
 ↓
 PickupPointModel
 ↓
-Live Provider
+ChronopostLiveProvider
 ↓
 ProviderFactory
 ↓
@@ -222,39 +373,41 @@ Use Case
 ↓
 FastAPI
 
-# Phase 10.3
+Result:
 
-Live Validation
+Third live carrier integrated successfully without architecture refactoring.
+
+## 14. Phase 10.3 - Live Carrier Validation
 
 Status:
 
-✅ COMPLETED
+COMPLETED
 
 Delivered:
 
-✅ Mondial Relay live validation
-✅ Colissimo live validation
-✅ Chronopost live validation
+- Mondial Relay live validation
+- Colissimo live validation
+- Chronopost live validation
 
 Validated:
 
-- Real API connectivity
-- Real payload retrieval
-- Real payload parsing
-- Real payload mapping
+- real API connectivity
+- real payload retrieval
+- real payload parsing
+- real payload mapping
 - PickupPointModel generation
-- Fixture creation
+- fixture creation
 
 Results:
 
 Mondial Relay
-✅ SOAP/XML validated
+SOAP / XML validated
 
 Colissimo
-✅ REST/JSON validated
+REST / JSON validated
 
 Chronopost
-✅ XML validated
+XML validated
 
 End-to-end flow validated:
 
@@ -276,149 +429,259 @@ Result:
 
 3 live carrier integrations validated end-to-end.
 
----
-
-# Phase 11
-
-Universal PUDO Core Completion
-
-Goals:
-
-- provider contracts
-- adapter contracts
-- architecture stabilization
-- ADR creation
-
----
-
-# Phase 12
-
-Frontend MVP
-
-Goals:
-
-- search page
-- Leaflet
-- OpenStreetMap
-- multi-carrier display
-- point selection
-
----
-
-# Phase 13
-
-SaaS Layer
-
-Goals:
-
-- users
-- tenants
-- organizations
-- carrier accounts
-- carrier activation
-- credentials vault
-- admin portal
-
-Important:
-
-Credentials are managed by the SaaS Layer.
-
-Not by the Core.
-
----
-
-# Phase 14
-
-Embedded Integration Layer
-
-Goals:
-
-- OMS adapter
-- WMS adapter
-- TMS adapter
-- checkout adapter
-
-Important:
-
-Credentials remain owned by the host system.
-
----
-
-# Phase 15
-
-SDK Layer
-
-Goals:
-
-- Python SDK
-- TypeScript SDK
-- Public API
-
----
-
-# Phase 16
-
-CMS Adapter Layer
-
-Goals:
-
-- WooCommerce
-- PrestaShop
-- Shopify
-- Magento
-
-Important:
-
-Credentials are managed by the CMS plugin.
-
-Not by the Core.
-
----
-
-# Phase 17
-
-Advanced Features
-
-- distance calculation
-- recommendations
-- scoring
-- ranking
-- advanced filtering
-
----
-
-# Phase 18
-
-Platform Hardening
-
-- provider health
-- retries
-- diagnostics
-- observability
-- monitoring
-
----
-
-# Backlog
-
-## Option B (Not Selected)
-
-Managed Carrier Credentials inside Universal PUDO Core
+## 15. Phase 11 - Universal PUDO Core Completion
 
 Status:
+
+COMPLETED
+
+Delivered:
+
+- ADR-0001 Provider Mapping Strategy
+- ADR-0002 Carrier Credential Ownership Strategy
+- ADR-0003 Core Public Interfaces Strategy
+- ADR-0004 Repository Boundary Strategy
+- Apache License 2.0 selected
+- public Core interfaces documented
+- Core / SaaS boundary documented
+- repository responsibility clarified
+- future ecosystem separated from Core roadmap
+- automated test suite validated
+- project structure updated
+- Core Freeze documentation prepared
+
+## 16. Core Freeze v1.0.0
+
+Status:
+
+READY AFTER DOCUMENTATION AND PACKAGING ALIGNMENT
+
+Required before final tag:
+
+- README.md aligned to v1.0.0
+- docs/product-vision.md aligned to v1.0.0
+- docs/architecture.md aligned to v1.0.0
+- docs/roadmap.md aligned to v1.0.0
+- docs/architecture/project_status.md aligned to v1.0.0
+- docs/architecture/project_structure.txt aligned to current repository structure
+- CHANGELOG.md aligned to v1.0.0
+- pyproject.toml version set to 1.0.0
+- pyproject.toml classifier set to Production/Stable
+- Apache License 2.0 present
+- pytest passing
+
+Current verified pytest result:
+
+157 passed
+1 warning
+0 failed
+
+## 17. Completed Core Scope
+
+The following topics are completed for the Core v1.0.0 milestone:
+
+- carrier abstraction
+- provider architecture
+- provider factory
+- canonical pickup point model
+- live carrier search
+- hybrid search
+- synchronization
+- stale pickup point detection
+- provider health
+- FastAPI integration
+- real carrier validation
+- fixture validation
+- architecture documentation
+- repository boundary documentation
+- Apache 2.0 license decision
+
+## 18. Removed From Core Roadmap
+
+The following items are no longer part of this Core roadmap.
+
+They belong to future repositories or downstream projects:
+
+- Frontend MVP
+- SaaS Layer
+- Embedded Integration Layer
+- SDK Layer
+- CMS Adapter Layer
+- Billing
+- User management
+- Tenant management
+- Authentication
+- Admin portal
+- Dashboards
+- Credential vault UI
+
+## 19. Future Ecosystem
+
+The following projects may be created separately after Core Freeze.
+
+### 19.1 universal-pudo-saas
+
+Repository role:
+
+SaaS product
+
+Responsibilities:
+
+- frontend
+- authentication
+- users
+- organizations
+- tenants
+- carrier accounts
+- credential management
+- admin portal
+- dashboards
+- reporting
+
+The SaaS consumes the Core.
+
+The SaaS never reimplements carrier integrations.
+
+### 19.2 universal-pudo-sdk-python
+
+Repository role:
+
+Python SDK
+
+Responsibilities:
+
+- developer wrappers
+- typed interfaces
+- helper methods
+- integration examples
+
+The SDK consumes the Core.
+
+The SDK does not implement provider logic.
+
+### 19.3 universal-pudo-sdk-typescript
+
+Repository role:
+
+TypeScript SDK
+
+Responsibilities:
+
+- typed client interfaces
+- frontend integration helpers
+- developer experience
+
+The SDK consumes the Core.
+
+The SDK does not implement provider logic.
+
+### 19.4 universal-pudo-cms-woocommerce
+
+Repository role:
+
+WooCommerce plugin
+
+Responsibilities:
+
+- WooCommerce checkout integration
+- WooCommerce configuration
+- CMS-specific credential storage
+- checkout pickup point selection UI
+
+The plugin consumes the Core.
+
+The plugin never reimplements carrier integrations.
+
+### 19.5 universal-pudo-cms-prestashop
+
+Repository role:
+
+PrestaShop plugin
+
+Responsibilities:
+
+- PrestaShop checkout integration
+- PrestaShop configuration
+- CMS-specific credential storage
+- checkout pickup point selection UI
+
+The plugin consumes the Core.
+
+The plugin never reimplements carrier integrations.
+
+## 20. Future Core Releases
+
+Future carrier integrations remain inside Universal PUDO Engine.
+
+Potential future Core versions:
+
+v1.1.0
+Add InPost
+
+v1.2.0
+Add DPD
+
+v1.3.0
+Add GLS
+
+v2.0.0
+Breaking changes to public Core interfaces, if required
+
+## 21. Backlog
+
+### Option B - Managed Carrier Credentials Inside The Core
+
+Status:
+
 Rejected for now
 
 Reason:
 
-Would create unnecessary coupling between the Core and transporteur connectivity management.
+Would create unnecessary coupling between the Core and carrier credential management.
 
----
+Future consideration:
 
-## Billing
+May be reconsidered only if a future SaaS business model requires it.
+
+### Billing
 
 Status:
+
 Backlog
 
 Reason:
 
 Business model not yet defined.
+
+Billing belongs to future SaaS work, not to the Core.
+
+## 22. Definition Of Done For Core v1.0.0
+
+Universal PUDO Engine Core v1.0.0 is considered complete when:
+
+- ADR-0001 is present
+- ADR-0002 is present
+- ADR-0003 is present
+- ADR-0004 is present
+- Apache License 2.0 is present
+- Colissimo is live validated
+- Mondial Relay is live validated
+- Chronopost is live validated
+- 157 automated tests pass
+- Core / SaaS separation is documented
+- pyproject.toml is set to version 1.0.0
+- README.md is aligned with Core Freeze
+- product-vision.md is aligned with Core Freeze
+- architecture.md is aligned with Core Freeze
+- roadmap.md is aligned with Core Freeze
+- project_status.md is aligned with Core Freeze
+- CHANGELOG.md contains v1.0.0
+- project_structure.txt reflects the real repository structure
+- final release commit is created
+- tag v1.0.0 is created
+
+At that point:
+
+# Universal PUDO Engine
+
+Core v1.0.0 completed

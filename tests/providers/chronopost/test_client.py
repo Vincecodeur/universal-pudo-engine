@@ -100,7 +100,7 @@ def test_chronopost_client_search_pickup_points(
 
     assert (
         captured["params"]["productCode"]
-        == "1"
+        == "86"
     )
 
     assert (
@@ -110,7 +110,7 @@ def test_chronopost_client_search_pickup_points(
 
     assert (
         captured["params"]["weight"]
-        == "1000"
+        == "1"
     )
 
     assert (
