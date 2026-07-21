@@ -32,7 +32,7 @@ v1.0.0
 
 Current Test Status:
 
-156 / 156 passing
+157 / 157 passing
 
 Validated Live Carriers:
 
@@ -638,7 +638,7 @@ TESTING
 
 Current Result:
 
-156 / 156 passing
+157 / 157 passing
 
 Coverage includes:
 

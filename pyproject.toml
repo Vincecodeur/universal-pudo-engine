@@ -48,8 +48,8 @@ dev = [
 ]
 
 [project.urls]
-Repository = "TBD"
-Documentation = "TBD"
+Repository = "https://github.com/Vincecodeur/universal-pudo-engine"
+Documentation = "https://github.com/Vincecodeur/universal-pudo-engine"
 
 [tool.ruff]
 line-length = 88
